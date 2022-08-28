@@ -18,6 +18,7 @@
 		848E984328BAF18E00E8C051 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984228BAF18E00E8C051 /* Home.swift */; };
 		848E984528BB31CA00E8C051 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984428BB31CA00E8C051 /* LocationManager.swift */; };
 		848E984728BBBC6100E8C051 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984628BBBC6100E8C051 /* DateExtension.swift */; };
+		848E984928BBD27200E8C051 /* SlashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984828BBD27200E8C051 /* SlashScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		848E984228BAF18E00E8C051 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		848E984428BB31CA00E8C051 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		848E984628BBBC6100E8C051 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		848E984828BBD27200E8C051 /* SlashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlashScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				848E982E28BAEC8000E8C051 /* ContentView.swift */,
 				848E984428BB31CA00E8C051 /* LocationManager.swift */,
 				848E984028BAEF0100E8C051 /* Api.swift */,
+				848E984828BBD27200E8C051 /* SlashScreen.swift */,
 				848E983E28BAEE0B00E8C051 /* Station.swift */,
 				848E983C28BAED9700E8C051 /* Bike.swift */,
 				848E984228BAF18E00E8C051 /* Home.swift */,
@@ -167,6 +170,7 @@
 				848E983D28BAED9700E8C051 /* Bike.swift in Sources */,
 				848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */,
 				848E984328BAF18E00E8C051 /* Home.swift in Sources */,
+				848E984928BBD27200E8C051 /* SlashScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
