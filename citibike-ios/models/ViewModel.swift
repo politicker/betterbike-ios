@@ -15,6 +15,7 @@ let defaultLongitude = -73.9548707
 class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var lastUpdated: String = ""
     @Published var stations: [Station] = []
+    @Published var locationFailed: Bool = false
     
     let manager = CLLocationManager()
     var location: CLLocationCoordinate2D?
@@ -79,13 +80,17 @@ extension ViewModel {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error.localizedDescription)")
+        self.locationFailed = true
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.authorisationStatus = status
         
         if status == .authorizedWhenInUse || status == .authorizedAlways {
+            self.locationFailed = false
             requestLocation()
+        } else {
+            self.locationFailed = true
         }
     }
 }

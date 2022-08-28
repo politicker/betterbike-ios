@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct SplashScreen: View {
-	var body: some View {
-		VStack {
-			Image(systemName: "bicycle")
-				.foregroundColor(.blue)
-			.font(.system(size: 90))
-			Text("Better Citibike")
-				.font(.system(size: 42))
-				.fontWeight(.black)
-		}
-		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-		.background(.white)
-		.edgesIgnoringSafeArea(.all)
-	}
+    var body: some View {
+        VStack {
+            Image(systemName: "bicycle")
+                .foregroundColor(.blue)
+                .font(.system(size: 90))
+            Text("Better Citibike")
+                .font(.system(size: 42))
+                .fontWeight(.black)
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .background(.white)
+        .edgesIgnoringSafeArea(.all)
+    }
 }
 
 
 struct SplashScreen_Previews: PreviewProvider {
-	static var previews: some View {
-		SplashScreen()
-	}
+    static var previews: some View {
+        SplashScreen()
+    }
 }
