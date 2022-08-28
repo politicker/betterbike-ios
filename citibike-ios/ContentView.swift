@@ -21,11 +21,13 @@ struct ContentView: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			HStack {
-				Text(lastUpdated)
 				Spacer()
-				if let location = locationManager.location {
-					Text("Your location: \(location.latitude), \(location.longitude)")
-				}
+				Text("Updated \(lastUpdated)")
+					.font(.subheadline)
+				//				Spacer()
+				//				if let location = locationManager.location {
+				//					Text("Your location: \(location.latitude), \(location.longitude)")
+				//				}
 			}.padding()
 			List {
 				ForEach($stations) { station in
@@ -39,7 +41,7 @@ struct ContentView: View {
 			fetchData()
 		} //.ignoresSafeArea(.all, edges: .top)
 	}
-
+	
 	func fetchData() -> Void {
 		API().fetchStations { response in
 			self.lastUpdated = response.shortDate
@@ -53,7 +55,7 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+	static var previews: some View {
+		ContentView()
+	}
 }

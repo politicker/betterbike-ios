@@ -13,15 +13,14 @@ struct Bike: Codable, Identifiable {
 	var range: String
 	var batteryIcon: String
 	
-	
 	func batteryColor() -> Color {
 		switch batteryIcon {
 			case "battery.25":
 				return Color.red
 			case "battery.50":
-				return Color.orange
+				return Color.black
 			case "battery.75":
-				return Color.yellow
+				return Color.black
 			case "battery.100":
 				return Color.green
 			default:

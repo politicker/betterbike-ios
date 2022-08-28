@@ -10,35 +10,33 @@ import SwiftUI
 struct StationView: View {
 	@Binding var station: Station
 	
-		var body: some View {
-			HStack {
-				VStack(alignment: .leading) {
-					HStack {
-						Text(station.name)
-							.font(.title)
-							.fontWeight(.bold)
-						Spacer()
-	//					Text("\(station.bikeCount) bikes")
-					}
+	var body: some View {
+		HStack {
+			VStack(alignment: .leading) {
+				HStack {
+					Text(station.name)
+						.fontWeight(.bold)
 					Spacer()
-					VStack(alignment: .leading) {
-						ForEach(station.bikes) { bike in
-							HStack {
-								Image(systemName: bike.batteryIcon)
-									.tint(.green)
-									.foregroundColor(bike.batteryColor())
-								Text(bike.range)
-							}
-							Spacer()
-						}
-					}
-				}.padding()
-				
-				VStack {
-					Text(station.bikeCount)
-					Image(systemName: "bicycle")
-						.foregroundColor(.blue)
 				}
+				Spacer()
+				VStack(alignment: .leading) {
+					ForEach(station.bikes) { bike in
+						HStack {
+							Image(systemName: bike.batteryIcon)
+								.tint(.green)
+								.foregroundColor(bike.batteryColor())
+							Text(bike.range)
+						}
+						Spacer()
+					}
+				}
+			}.padding()
+			
+			VStack {
+				Text(station.bikeCount)
+				Image(systemName: "bicycle")
+					.foregroundColor(.blue)
 			}
 		}
+	}
 }
