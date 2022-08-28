@@ -323,7 +323,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = X89NH32C54;
+				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allow us to use your location all the time";
@@ -338,7 +338,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "politicker-citibike";
+				PRODUCT_BUNDLE_IDENTIFIER = "politicker-better-bikes";
 				PRODUCT_NAME = "Better Bike";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -354,7 +354,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = X89NH32C54;
+				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allow us to use your location all the time";
@@ -369,7 +369,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "politicker-citibike";
+				PRODUCT_BUNDLE_IDENTIFIER = "politicker-better-bikes";
 				PRODUCT_NAME = "Better Bike";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
