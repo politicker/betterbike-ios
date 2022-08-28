@@ -19,16 +19,14 @@ struct ContentView: View {
         ZStack {
             if viewModel.locationFailed {
                 ErrorLocationView()
+            } else if viewModel.fetchError != "" {
+                ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
             } else {
                 VStack(alignment: .leading) {
                     HStack {
                         Spacer()
                         Text("Updated \(viewModel.lastUpdated)")
                             .font(.subheadline)
-                        //				Spacer()
-                        //				if let location = locationManager.location {
-                        //					Text("Your location: \(location.latitude), \(location.longitude)")
-                        //				}
                     }.padding()
                     List {
                         ForEach($viewModel.stations) { station in
@@ -40,7 +38,7 @@ struct ContentView: View {
                 }.onAppear {
                     locationManager.requestAuthorisation(always: false)
                     viewModel.fetchData()
-                } //.ignoresSafeArea(.all, edges: .top)
+                }
                 
                 SplashScreen()
                     .opacity(viewModel.stations.isEmpty ? 1 : 0)

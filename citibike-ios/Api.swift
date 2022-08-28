@@ -11,7 +11,12 @@ import CoreLocation
 enum NetworkError: Error {
     case badUrl
     case badRequest
-    case unknownError
+    case unknownError(String)
+    case serverError(ServerError)
+}
+
+struct ServerError: Codable {
+    var error: String
 }
 
 struct API {
@@ -36,21 +41,38 @@ struct API {
         request.httpMethod = "POST"
         request.httpBody = jsonData
         
-        URLSession.shared.dataTask(with: request) { (data, _, _) in
-            var response: Home? = nil
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            var viewData: Home? = nil
+            
+            guard let response = response as? HTTPURLResponse else {
+                completion(.failure(.unknownError("could not unwrap response object")))
+                return
+            }
+            
+            if response.statusCode == 422 {
+                do {
+                    let errorData = try JSONDecoder().decode(ServerError.self, from: data!)
+                    completion(.failure(.serverError(errorData)))
+                    return
+                } catch {
+                    completion(.failure(.unknownError("could not decode server error")))
+                    return
+                }
+            }
+            
             do {
-                response = try JSONDecoder().decode(Home.self, from: data!)
+                viewData = try JSONDecoder().decode(Home.self, from: data!)
             } catch {
-                completion(.failure(.unknownError))
+                completion(.failure(.unknownError("could not decode server data")))
+                return
             }
             
             DispatchQueue.main.async {
-                guard let home = response else {
-                    completion(.failure(.unknownError))
+                guard let home = viewData else {
+                    completion(.failure(.unknownError("could not unwrap server data")))
                     return
                 }
                 
-                print(home)
                 completion(.success(home))
             }
         }.resume()

@@ -16,6 +16,7 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var lastUpdated: String = ""
     @Published var stations: [Station] = []
     @Published var locationFailed: Bool = false
+    @Published var fetchError: String = ""
     
     let manager = CLLocationManager()
     var location: CLLocationCoordinate2D?
@@ -45,8 +46,16 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             case .success(let response):
                 self.lastUpdated = response.shortDate
                 self.stations = response.stations
+                self.fetchError = ""
             case .failure(let error):
-                print(error.localizedDescription)
+                switch error {
+                case .serverError(let message):
+                    self.fetchError = message.error
+                case .unknownError(let message):
+                    self.fetchError = message
+                default:
+                    self.fetchError = error.localizedDescription
+                }
             }
         }
     }
