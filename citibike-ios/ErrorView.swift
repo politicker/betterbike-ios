@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ErrorView: View {
+//	TODO: Pass in model to re-fetch station data
+//	@Binding var model: MainModel?
+	
 	var body: some View {
 		VStack {
 			Image(systemName: "wifi.slash")
@@ -18,6 +21,7 @@ struct ErrorView: View {
 				.padding(.bottom)
 			Button("Try Again") {
 				print("fetch stations")
+				// model.fetchStationData()
 			}
 		}
 		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)

@@ -10,23 +10,17 @@ import CoreLocation
 import CoreLocationUI
 
 struct ContentView: View {
-	@State var stations: [Station] = []
-	@State var lastUpdated: String = ""
-	
-	@State var latitude: CLLocationDegrees = 0
-	@State var longitude: CLLocationDegrees = 0
-	
-	@State var showSplash = true
 	@State var splashOpacity: Double = 1
 	
 	@StateObject var locationManager = LocationManager()
+	@StateObject var viewModel = ViewModel()
 	
 	var body: some View {
 		ZStack {
 			VStack(alignment: .leading) {
 				HStack {
 					Spacer()
-					Text("Updated \(lastUpdated)")
+					Text("Updated \(viewModel.lastUpdated)")
 						.font(.subheadline)
 					//				Spacer()
 					//				if let location = locationManager.location {
@@ -34,30 +28,20 @@ struct ContentView: View {
 					//				}
 				}.padding()
 				List {
-					ForEach($stations) { station in
+					ForEach($viewModel.stations) { station in
 						StationView(station: station)
 					}.listStyle(InsetGroupedListStyle())
 				}.refreshable {
-					fetchData()
+					viewModel.fetchStations()
 				}
 			}.onAppear {
 				locationManager.requestAuthorisation(always: false)
-				fetchData()
+				viewModel.fetchData()
 			} //.ignoresSafeArea(.all, edges: .top)
-			SplashScreen()
-				.opacity(splashOpacity)
-		}
-	}
-	
-	func fetchData() -> Void {
-		API().fetchStations { response in
-			self.lastUpdated = response.shortDate
-			self.stations = response.stations
-			
-			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-				withAnimation(.easeIn(duration: 0.3)) {
-						 self.splashOpacity = 0
-				 }
+
+			if $viewModel.stations.isEmpty {
+				SplashScreen()
+					.opacity(splashOpacity)
 			}
 		}
 	}
