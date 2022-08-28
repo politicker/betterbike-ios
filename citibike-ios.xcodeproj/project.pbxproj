@@ -67,9 +67,9 @@
 				848E984028BAEF0100E8C051 /* Api.swift */,
 				848E983E28BAEE0B00E8C051 /* Station.swift */,
 				848E983C28BAED9700E8C051 /* Bike.swift */,
+				848E984228BAF18E00E8C051 /* Home.swift */,
 				848E983028BAEC8300E8C051 /* Assets.xcassets */,
 				848E983228BAEC8300E8C051 /* Preview Content */,
-				848E984228BAF18E00E8C051 /* Home.swift */,
 			);
 			path = "citibike-ios";
 			sourceTree = "<group>";

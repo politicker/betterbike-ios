@@ -7,24 +7,35 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
 	@State var stations: [Station] = []
 	@State var lastUpdated: String = ""
 	
-    var body: some View {
-			Text(lastUpdated)
-				.padding()
-			
-			List(stations) { station in
-				Text(station.name)
-				Text(station.bikeCount)
-			}.onAppear {
-				API().fetchStations { response in
-						 self.lastUpdated = response.lastUpdated
-						 self.stations = response.stations
-					 }
-				 }
+	var body: some View {
+		VStack(alignment: .leading) {
+			HStack {
+				Spacer()
+				Text(lastUpdated)
+			}.padding()
+			List {
+				ForEach($stations) { station in
+					StationView(station: station)
+				}.listStyle(InsetGroupedListStyle())
+			}.refreshable {
+				fetchData()
+			}
+		}.onAppear {
+			fetchData()
 		}
+	}
+	
+	func fetchData() -> Void {
+		API().fetchStations { response in
+			self.lastUpdated = response.shortDate
+				self.stations = response.stations
+		}
+	}
 }
 
 struct ContentView_Previews: PreviewProvider {
