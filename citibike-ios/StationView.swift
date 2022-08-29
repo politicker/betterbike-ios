@@ -23,7 +23,6 @@ struct StationView: View {
                     ForEach(station.bikes) { bike in
                         HStack {
                             Image(systemName: bike.batteryIcon)
-                                .tint(.green)
                                 .foregroundColor(bike.batteryColor())
                             Text(bike.range)
                         }

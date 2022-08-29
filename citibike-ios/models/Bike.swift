@@ -18,13 +18,13 @@ struct Bike: Codable, Identifiable {
         case "battery.25":
             return Color.red
         case "battery.50":
-            return Color.black
+            return Color("BatteryIcon")
         case "battery.75":
-            return Color.black
+            return Color("BatteryIcon")
         case "battery.100":
             return Color.green
         default:
-            return Color.black
+            return Color("BatteryIcon")
         }
     }
 }
