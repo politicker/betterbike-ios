@@ -21,7 +21,7 @@ struct ServerError: Codable {
 
 struct API {
     func fetchStations(lat: Double, lon: Double, completion: @escaping (Result<Home, NetworkError>) -> ()) {
-        guard let url = URL(string: "https://bikes.politicker.info") else {
+        guard let url = URL(string: "http://localhost:8081") else {
             completion(.failure(.badUrl))
             return
         }

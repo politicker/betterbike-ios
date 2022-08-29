@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SplashScreen: View {
+struct SplashScreenView: View {
     var body: some View {
         VStack {
             Image(systemName: "bicycle")
@@ -26,6 +26,6 @@ struct SplashScreen: View {
 
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SplashScreen()
+        SplashScreenView()
     }
 }

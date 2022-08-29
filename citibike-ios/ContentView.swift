@@ -28,19 +28,23 @@ struct ContentView: View {
                         Text("Updated \(viewModel.lastUpdated)")
                             .font(.subheadline)
                     }.padding()
-                    List {
-                        ForEach($viewModel.stations) { station in
-                            StationView(station: station)
-                        }.listStyle(InsetGroupedListStyle())
-                    }.refreshable {
-                        viewModel.fetchStations()
-                    }
+									NavigationView {
+										List {
+													ForEach($viewModel.stations) { station in
+														NavigationLink(destination: StationDetailView(station: station.wrappedValue)) {
+															StationView(station: station)
+														}
+													}.listStyle(InsetGroupedListStyle())
+											}.refreshable {
+													viewModel.fetchStations()
+										}
+									}
                 }.onAppear {
                     locationManager.requestAuthorisation(always: false)
                     viewModel.fetchData()
                 }
                 
-                SplashScreen()
+                SplashScreenView()
                     .opacity(viewModel.stations.isEmpty ? 1 : 0)
                     .animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
             }
