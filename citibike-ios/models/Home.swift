@@ -16,6 +16,7 @@ struct Home: Codable {
     var shortDate: String {
         let parser = DateFormatter()
         parser.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        parser.timeZone = TimeZone(abbreviation: "UTC")
         
         if let date = parser.date(from: lastUpdated) {
             return date.timeAgoDisplay()
