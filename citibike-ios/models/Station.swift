@@ -8,8 +8,10 @@
 import Foundation
 
 struct Station: Codable, Identifiable {
-    var id: String
-    var name: String
-    var bikeCount: String
-    var bikes: [Bike]
+	var id: String
+	var name: String
+	var bikeCount: String
+	var bikes: [Bike]
+	var lat: Float
+	var lon: Float
 }
