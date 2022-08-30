@@ -14,6 +14,10 @@ struct ContentView: View {
 
 	@StateObject var locationManager = LocationManager()
 	@StateObject var viewModel = ViewModel()
+	
+	init() {
+		UITableView.appearance().separatorColor = .clear
+	}
 
 	var body: some View {
 		ZStack {
@@ -22,28 +26,34 @@ struct ContentView: View {
 			} else if viewModel.fetchError != "" {
 				ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
 			} else {
-				VStack(alignment: .leading) {
-					HStack {
-						Spacer()
-						Text("Updated \(viewModel.lastUpdated)")
-							.font(.subheadline)
-							.foregroundColor(.gray)
-					}.padding()
-					List {
-						ForEach($viewModel.stations) { station in
-							StationView(station: station)
-								.listRowSeparator(.hidden)
-							Divider()
+				NavigationView {
+					VStack(alignment: .leading) {
+						HStack {
+							Spacer()
+							Text("Updated \(viewModel.lastUpdated)")
+								.font(.subheadline)
+								.foregroundColor(.gray)
+						}.padding()
+						List {
+							ForEach($viewModel.stations) { station in
+								NavigationLink(destination: StationDetailView(station: station.wrappedValue)) {
+									StationView(station: station)
+								}
+									.navigationBarHidden(true)
+								
+								Divider()
+							}
 						}
+						.listStyle(.plain)
+						.refreshable {
+							viewModel.fetchStations()
+						}
+					}.onAppear {
+						locationManager.requestAuthorisation()
+						viewModel.fetchData()
 					}
-					.listStyle(.plain)
-					.refreshable {
-						viewModel.fetchStations()
-					}
-				}.onAppear {
-					locationManager.requestAuthorisation()
-					viewModel.fetchData()
 				}
+				.buttonStyle(.plain)
 
 				SplashScreenView()
 					.opacity(viewModel.stations.isEmpty ? 1 : 0)
