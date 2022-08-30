@@ -12,6 +12,6 @@ struct Station: Codable, Identifiable {
 	var name: String
 	var bikeCount: String
 	var bikes: [Bike]
-	var lat: Float64
-	var lon: Float64
+	var lat: Float
+	var lon: Float
 }

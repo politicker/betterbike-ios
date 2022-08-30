@@ -20,12 +20,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         manager.delegate = self
     }
     
-    public func requestAuthorisation(always: Bool = false) {
-        if always {
-            self.manager.requestAlwaysAuthorization()
-        } else {
+    public func requestAuthorisation() {
             self.manager.requestWhenInUseAuthorization()
-        }
     }
     
     func requestLocation() {

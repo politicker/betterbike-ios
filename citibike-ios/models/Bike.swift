@@ -9,22 +9,22 @@ import UIKit
 import SwiftUI
 
 struct Bike: Codable, Identifiable {
-    var id: String
-    var range: String
-    var batteryIcon: String
-    
-    func batteryColor() -> Color {
-        switch batteryIcon {
-        case "battery.25":
-            return Color.red
-        case "battery.50":
-            return Color.black
-        case "battery.75":
-            return Color.black
-        case "battery.100":
-            return Color.green
-        default:
-            return Color.black
-        }
-    }
+	var id: String
+	var range: String
+	var batteryIcon: String
+	
+	func batteryColor() -> Color {
+		switch batteryIcon {
+			case "battery.25":
+				return Color.red
+			case "battery.50":
+				return Color("BatteryIcon")
+			case "battery.75":
+				return Color("BatteryIcon")
+			case "battery.100":
+				return Color.green
+			default:
+				return Color("BatteryIcon")
+		}
+	}
 }
