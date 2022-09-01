@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 
 struct BikeListView: View {
@@ -25,6 +26,49 @@ struct BikeListView: View {
 	}
 }
 
+struct WalkingDurationView: View {
+	@State var travelTime: TimeInterval = 0
+	@State var isLoading: Bool = true
+	
+	var destinationLat: Float
+	var destinationLon: Float
+	
+	var travelTimeInMinutes: String {
+		let minutes = (travelTime / 60)
+		
+		return String(format: "%.0f min", minutes)
+	}
+	
+	var body: some View {
+		Text(self.isLoading ? "Loading" : String(self.travelTimeInMinutes))
+			.onAppear {
+				getDirections()
+			}
+	}
+
+	func getDirections() {
+		let request = MKDirections.Request()
+		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 40.720035, longitude: -73.9538756), addressDictionary: nil))
+		request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(destinationLat), longitude: CLLocationDegrees(destinationLon)), addressDictionary: nil))
+		request.transportType = .walking
+		
+		let directions = MKDirections(request: request)
+		
+		directions.calculate { response, error in
+			guard let unwrappedResponse = response else {
+				print(error ?? "error calculating directions")
+				return
+			}
+
+			for route in unwrappedResponse.routes {
+				self.travelTime = route.expectedTravelTime
+				self.isLoading = false
+				print(route.expectedTravelTime)
+			}
+		}
+	}
+}
+
 struct StationView: View {
 	@Binding var station: Station
 	
@@ -34,6 +78,8 @@ struct StationView: View {
 				HStack {
 					Text(station.name)
 						.fontWeight(.bold)
+					Text("·")
+					WalkingDurationView(destinationLat: station.lat, destinationLon: station.lon)
 					Spacer()
 				}
 				Spacer()
@@ -44,7 +90,7 @@ struct StationView: View {
 					BikeListView(bikes: station.bikes)
 				}
 			}
-			
+
 			VStack {
 				Text(station.bikeCount)
 				Image(systemName: "bicycle")

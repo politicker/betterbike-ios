@@ -21,6 +21,7 @@
 		848E984928BBD27200E8C051 /* SlashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984828BBD27200E8C051 /* SlashScreen.swift */; };
 		848E984B28BBE00900E8C051 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984A28BBE00900E8C051 /* ErrorView.swift */; };
 		848E984D28BBE21300E8C051 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E984C28BBE21300E8C051 /* ViewModel.swift */; };
+		848E985428C03E1C00E8C051 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E985328C03E1C00E8C051 /* MapView.swift */; };
 		C01CF8EE28BC07C800B1B349 /* ErrorLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */; };
 		C01CF8F028BC0E1900B1B349 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C01CF8EF28BC0E1900B1B349 /* Settings.bundle */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		848E984828BBD27200E8C051 /* SlashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlashScreen.swift; sourceTree = "<group>"; };
 		848E984A28BBE00900E8C051 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		848E984C28BBE21300E8C051 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		848E985328C03E1C00E8C051 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorLocationView.swift; sourceTree = "<group>"; };
 		C01CF8EF28BC0E1900B1B349 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +90,7 @@
 				848E983228BAEC8300E8C051 /* Preview Content */,
 				848E984A28BBE00900E8C051 /* ErrorView.swift */,
 				C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */,
+				848E985328C03E1C00E8C051 /* MapView.swift */,
 			);
 			path = "citibike-ios";
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				848E984B28BBE00900E8C051 /* ErrorView.swift in Sources */,
 				848E983B28BAED4F00E8C051 /* StationView.swift in Sources */,
 				848E984728BBBC6100E8C051 /* DateExtension.swift in Sources */,
+				848E985428C03E1C00E8C051 /* MapView.swift in Sources */,
 				848E984528BB31CA00E8C051 /* LocationManager.swift in Sources */,
 				848E983D28BAED9700E8C051 /* Bike.swift in Sources */,
 				848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */,
