@@ -24,11 +24,11 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     let locationManager = LocationManager()
     
     var latitude: Double {
-        return location?.latitude ?? 40.7203835
+        return location?.latitude ?? defaultLatitude
     }
     
     var longitude: Double {
-        return location?.longitude ?? -73.9548707
+        return location?.longitude ?? defaultLongitude
     }
     
     override init() {
