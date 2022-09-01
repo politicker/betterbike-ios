@@ -27,6 +27,7 @@ struct BikeListView: View {
 }
 
 struct WalkingDurationView: View {
+	var station: Station
 	@State var travelTime: TimeInterval = 0
 	@State var isLoading: Bool = true
 	
@@ -38,12 +39,18 @@ struct WalkingDurationView: View {
 		
 		return String(format: "%.0f min", minutes)
 	}
-	
+
 	var body: some View {
-		Text(self.isLoading ? "Loading" : String(self.travelTimeInMinutes))
-			.onAppear {
-				getDirections()
-			}
+		if isLoading {
+			Text("")
+				.onAppear {
+					if !station.hasCalculatedTravelDuration {
+						getDirections()
+					}
+				}
+		} else {
+			Text(self.travelTimeInMinutes)
+		}
 	}
 
 	func getDirections() {
@@ -63,6 +70,10 @@ struct WalkingDurationView: View {
 			for route in unwrappedResponse.routes {
 				self.travelTime = route.expectedTravelTime
 				self.isLoading = false
+				
+				station.hasCalculatedTravelDuration = true
+				station.travelDuration = travelTime
+
 				print(route.expectedTravelTime)
 			}
 		}
@@ -79,7 +90,7 @@ struct StationView: View {
 					Text(station.name)
 						.fontWeight(.bold)
 					Text("·")
-					WalkingDurationView(destinationLat: station.lat, destinationLon: station.lon)
+					WalkingDurationView(station: station, destinationLat: station.lat, destinationLon: station.lon)
 					Spacer()
 				}
 				Spacer()
