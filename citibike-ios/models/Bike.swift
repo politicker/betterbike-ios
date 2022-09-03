@@ -17,10 +17,6 @@ struct Bike: Decodable, Identifiable {
 		switch batteryIcon {
 			case "battery.25":
 				return Color.red
-			case "battery.50":
-				return Color("BatteryIcon")
-			case "battery.75":
-				return Color("BatteryIcon")
 			case "battery.100":
 				return Color.green
 			default:
