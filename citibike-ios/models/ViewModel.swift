@@ -41,28 +41,42 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		fetchLocation()
 	}
 	
-	public func fetchStations() -> Void {
-		API().fetchStations(lat: latitude, lon: longitude) { result in
-			switch result {
-				case .success(let response):
+	public func fetchStations() async {
+		let result = await API().fetchStations(lat: latitude, lon: longitude)
+		
+		switch result {
+			case .success(let response):
+				DispatchQueue.main.async {
 					self.lastUpdated = response.shortDate
 					self.stations = response.stations
 					self.fetchError = ""
-				case .failure(let error):
-					switch error {
-						case .serverError(let message):
-							self.fetchError = message.error
-						case .unknownError(let message):
-							self.fetchError = message
-						default:
-							self.fetchError = error.localizedDescription
-					}
-			}
+				}
+				
+				await fetchStationWalkingTravelTimes()
+			case .failure(let error):
+				switch error {
+					case .serverError(let message):
+						self.fetchError = message.error
+					case .unknownError(let message):
+						self.fetchError = message
+					default:
+						self.fetchError = error.localizedDescription
+				}
 		}
 	}
 	
 	public func fetchLocation() -> Void {
 		locationManager.requestLocation()
+	}
+	
+	private func fetchStationWalkingTravelTimes() async {
+		for station in stations {
+			let travelTime = await calculateExpectedTravelTime(to: station)
+			if let travelTime = travelTime {
+				station.travelDuration = travelTime
+				station.hasCalculatedTravelDuration = true
+			}
+		}
 	}
 }
 
@@ -76,29 +90,32 @@ struct Location {
 }
 
 // MARK: Directions calculation
+// TODO: When we add map view, change this to return the full MKRoute object instead of the travel time
 extension ViewModel {
-	public func calculateExpectedTravelTime(from location: Location, to station: Station, completion: @escaping (Result<TimeInterval, DirectionsError>) -> ()) {
+	public func calculateExpectedTravelTime(to station: Station) async -> TimeInterval? {
 		let request = MKDirections.Request()
-		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon), addressDictionary: nil))
+		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), addressDictionary: nil))
 		request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(station.lat), longitude: CLLocationDegrees(station.lon)), addressDictionary: nil))
 		request.transportType = .walking
 		
 		let directions = MKDirections(request: request)
+		var response: MKDirections.Response?
 		
-		directions.calculate { response, error in
-			guard let unwrappedResponse = response else {
-				let message = error?.localizedDescription ?? "unknown error calculating directions"
-				completion(.failure(.unknownError(message)))
-				return
-			}
-			
-			guard let expectedTravelTime = unwrappedResponse.routes.first?.expectedTravelTime else {
-				completion(.failure(.unknownError("no routes returned")))
-				return
-			}
-			
-			completion(.success(expectedTravelTime))
+		do {
+			response = try await directions.calculate()
+		} catch {
+			return nil
 		}
+		
+		guard let unwrappedResponse = response else {
+			return nil
+		}
+		
+		guard let expectedTravelTime = unwrappedResponse.routes.first?.expectedTravelTime else {
+			return nil
+		}
+		
+		return expectedTravelTime
 	}
 }
 
@@ -121,7 +138,10 @@ extension ViewModel {
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		location = locations.first?.coordinate
-		fetchStations()
+		
+		Task {
+			await fetchStations()
+		}
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

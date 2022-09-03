@@ -31,14 +31,16 @@ struct ContentView: View {
 					}.padding()
 					List {
 						ForEach($viewModel.stations) { station in
-							StationView(station: station)
+							StationView(station: station, viewModel: viewModel)
 								.listRowSeparator(.hidden)
 							Divider()
 						}
 					}
 					.listStyle(.plain)
 					.refreshable {
-						viewModel.fetchStations()
+						Task {
+							await viewModel.fetchStations()
+						}
 					}
 				}.onAppear {
 					locationManager.requestAuthorisation()

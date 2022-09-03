@@ -13,7 +13,7 @@ struct MapView: View {
 	@State var travelTime: TimeInterval = 0
 	@State var isLoading: Bool = true
 	@State var hasCalculated: Bool = false
-
+	
 	var body: some View {
 		Text(self.isLoading ? "Loading" : String(self.travelTime))
 			.onAppear {
@@ -22,7 +22,7 @@ struct MapView: View {
 				}
 			}
 	}
-
+	
 	func getDirections() {
 		let request = MKDirections.Request()
 		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 40.720035, longitude: -73.9538756), addressDictionary: nil))
@@ -36,7 +36,7 @@ struct MapView: View {
 				print("error")
 				return
 			}
-
+			
 			for route in unwrappedResponse.routes {
 				self.travelTime = route.expectedTravelTime
 				self.isLoading = false

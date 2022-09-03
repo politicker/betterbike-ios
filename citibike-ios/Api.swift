@@ -20,10 +20,9 @@ struct ServerError: Codable {
 }
 
 struct API {
-	func fetchStations(lat: Double, lon: Double, completion: @escaping (Result<Home, NetworkError>) -> ()) {
+	func fetchStations(lat: Double, lon: Double) async -> Result<Home, NetworkError> {
 		guard let url = URL(string: "http://localhost:8081") else {
-			completion(.failure(.badUrl))
-			return
+			return .failure(.badUrl)
 		}
 		
 		var request = URLRequest(url: url)
@@ -35,46 +34,49 @@ struct API {
 		do {
 			jsonData = try JSONSerialization.data(withJSONObject: json)
 		} catch {
-			completion(.failure(.badRequest))
+			return .failure(.badRequest)
 		}
 		
 		request.httpMethod = "POST"
 		request.httpBody = jsonData
 		
-		URLSession.shared.dataTask(with: request) { (data, response, error) in
-			var viewData: Home? = nil
-			
-			guard let response = response as? HTTPURLResponse else {
-				completion(.failure(.unknownError("could not unwrap response object")))
-				return
-			}
-			
-			if response.statusCode == 422 {
-				do {
-					let errorData = try JSONDecoder().decode(ServerError.self, from: data!)
-					completion(.failure(.serverError(errorData)))
-					return
-				} catch {
-					completion(.failure(.unknownError("could not decode server error")))
-					return
-				}
-			}
-			
+		let data: Data?
+		let response: URLResponse?
+		
+		
+		do {
+			(data, response) = try await URLSession.shared.data(for: request)
+		} catch {
+			return .failure(.unknownError("API request failed"))
+		}
+		
+		var viewData: Home? = nil
+		
+		guard let response = response as? HTTPURLResponse else {
+			return .failure(.unknownError("could not unwrap response object"))
+		}
+		
+		
+		
+		if response.statusCode == 422 {
 			do {
-				viewData = try JSONDecoder().decode(Home.self, from: data!)
+				let errorData = try JSONDecoder().decode(ServerError.self, from: data!)
+				return .failure(.serverError(errorData))
 			} catch {
-				completion(.failure(.unknownError("could not decode server data")))
-				return
+				return .failure(.unknownError("could not decode server error"))
 			}
-			
-			DispatchQueue.main.async {
-				guard let home = viewData else {
-					completion(.failure(.unknownError("could not unwrap server data")))
-					return
-				}
-				
-				completion(.success(home))
-			}
-		}.resume()
+		}
+		
+		do {
+			viewData = try JSONDecoder().decode(Home.self, from: data!)
+		} catch {
+			return .failure(.unknownError("could not decode server data"))
+		}
+		
+		guard let home = viewData else {
+			return .failure(.unknownError("could not unwrap server data"))
+		}
+		
+		return .success(home)
 	}
 }
