@@ -9,11 +9,14 @@ import Foundation
 import CoreLocation
 import CoreLocationUI
 import MapKit
+import os
 
 let defaultLatitude = 40.7203835
 let defaultLongitude = -73.9548707
 
 class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+	let logger = Logger(subsystem: "com.politicker-better-bikes.ViewModel", category: "ViewModel")
+
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
 	@Published var locationFailed: Bool = false
@@ -38,7 +41,8 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		manager.delegate = self
 	}
 	
-	public func fetchStations() async -> Void {
+	func fetchStations() async -> Void {
+		logger.debug("fetching stations")
 		let result = await API().fetchStations(lat: latitude, lon: longitude)
 		
 		DispatchQueue.main.async {
@@ -67,7 +71,7 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		}
 	}
 	
-	public func requestAuthorisation(always: Bool = false) {
+	func requestAuthorisation(always: Bool = false) {
 		if always {
 			self.manager.requestAlwaysAuthorization()
 		} else {
@@ -85,8 +89,9 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	func populateStationRoutes() -> Void {
 		for station in stations {
 			Task {
+				logger.debug("calculating expected travel time for \(station.name)")
 				let expectedTravelTime = await calculateExpectedTravelTime(to: station)
-				
+
 				guard let expectedTravelTime = expectedTravelTime else {
 					return
 				}
