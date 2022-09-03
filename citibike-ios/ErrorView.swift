@@ -11,7 +11,7 @@ struct ErrorView: View {
     //	TODO: Pass in model to re-fetch station data
     //	@Binding var model: MainModel?
     var message: String
-    var refetch: () -> ()
+    var refetch: () async -> ()
 
     var body: some View {
         VStack {
@@ -26,7 +26,9 @@ struct ErrorView: View {
                 .fontWeight(.bold)
                 .padding(.bottom)
             Button("Try Again") {
-                refetch()
+				Task {
+					await refetch()
+				}
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)

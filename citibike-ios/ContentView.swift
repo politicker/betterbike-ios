@@ -12,7 +12,6 @@ import CoreLocationUI
 struct ContentView: View {
 	@State var splashOpacity: Double = 1
 	
-	@StateObject var locationManager = LocationManager()
 	@StateObject var viewModel = ViewModel()
 	
 	var body: some View {
@@ -38,11 +37,10 @@ struct ContentView: View {
 					}
 					.listStyle(.plain)
 					.refreshable {
-						viewModel.fetchStations()
+						await viewModel.fetchStations()
 					}
 				}.onAppear {
-					locationManager.requestAuthorisation()
-					viewModel.fetchData()
+					viewModel.requestLocation()
 				}
 				
 				SplashScreen()
@@ -50,10 +48,6 @@ struct ContentView: View {
 					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
 			}
 		}
-	}
-	
-	func getCurrentLocation() -> Void {
-		locationManager.requestLocation()
 	}
 }
 
