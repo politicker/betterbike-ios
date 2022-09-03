@@ -7,9 +7,7 @@
 
 import Foundation
 
-
-
-struct Home: Codable {
+struct Home: Decodable {
     var lastUpdated: String
     var stations: [Station]
     

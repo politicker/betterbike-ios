@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-struct Bike: Codable, Identifiable {
+struct Bike: Decodable, Identifiable {
 	var id: String
 	var range: String
 	var batteryIcon: String
