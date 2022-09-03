@@ -26,7 +26,8 @@ struct BikeListView: View {
 }
 
 struct StationView: View {
-	@Binding var station: Station
+	var station: Station
+	var stationRoute: StationRoute?
 	
 	var body: some View {
 		HStack {
@@ -34,6 +35,12 @@ struct StationView: View {
 				HStack {
 					Text(station.name)
 						.fontWeight(.bold)
+					
+					if let travelTime = stationRoute?.travelTimeInMinutes {
+						Text("﹒")
+						Text(travelTime)
+					}
+					
 					Spacer()
 				}
 				Spacer()

@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import CoreLocationUI
+import MapKit
 
 let defaultLatitude = 40.7203835
 let defaultLongitude = -73.9548707
@@ -17,6 +18,7 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	@Published var stations: [Station] = []
 	@Published var locationFailed: Bool = false
 	@Published var fetchError: String = ""
+	@Published var stationRoutes: [String: StationRoute] = [:]
 	
 	let manager = CLLocationManager()
 	var location: CLLocationCoordinate2D?
@@ -71,16 +73,44 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		// I think this fetches location anytime the phone goes outside of a certain bound
 		manager.startUpdatingLocation()
 	}
+	
+	func populateStationRoutes() -> Void {
+		for station in stations {
+			Task {
+				let expectedTravelTime = await calculateExpectedTravelTime(to: station)
+				
+				guard let expectedTravelTime = expectedTravelTime else {
+					return
+				}
+				
+				DispatchQueue.main.async {
+					self.stationRoutes[station.id] = StationRoute(expectedTravelTime: expectedTravelTime)
+				}
+			}
+		}
+	}
+	
+	func refresh() {
+		Task {
+			await fetchStations()
+			populateStationRoutes()
+		}
+	}
+	
+	func reset() {
+		location = nil
+	}
 }
 
 // MARK: Location Manager Delegate
 extension ViewModel {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		location = locations.first?.coordinate
-
-		Task {
-			await fetchStations()
+		if location == nil {
+			location = locations.first?.coordinate
+			refresh()
 		}
+
+		location = locations.first?.coordinate
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -97,5 +127,34 @@ extension ViewModel {
 		} else {
 			self.locationFailed = true
 		}
+	}
+}
+
+// MARK: Calculate station distance {
+extension ViewModel {
+	public func calculateExpectedTravelTime(to station: Station) async -> TimeInterval? {
+		let request = MKDirections.Request()
+		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), addressDictionary: nil))
+		request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(station.lat), longitude: CLLocationDegrees(station.lon)), addressDictionary: nil))
+		request.transportType = .walking
+		
+		let directions = MKDirections(request: request)
+		var response: MKDirections.Response?
+		
+		do {
+			response = try await directions.calculate()
+		} catch {
+			return nil
+		}
+		
+		guard let unwrappedResponse = response else {
+			return nil
+		}
+		
+		guard let expectedTravelTime = unwrappedResponse.routes.first?.expectedTravelTime else {
+			return nil
+		}
+		
+		return expectedTravelTime
 	}
 }

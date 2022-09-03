@@ -14,4 +14,13 @@ struct Station: Decodable, Identifiable {
 	var bikes: [Bike]
 	var lat: Float
 	var lon: Float
+
+	enum CodingKeys: String, CodingKey {
+		case id
+		case name
+		case bikeCount
+		case bikes
+		case lat
+		case lon
+	}
 }

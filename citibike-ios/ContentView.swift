@@ -11,8 +11,8 @@ import CoreLocationUI
 
 struct ContentView: View {
 	@State var splashOpacity: Double = 1
-	
 	@StateObject var viewModel = ViewModel()
+	@Environment(\.scenePhase) var scenePhase
 	
 	var body: some View {
 		ZStack {
@@ -30,17 +30,19 @@ struct ContentView: View {
 					}.padding()
 					List {
 						ForEach($viewModel.stations) { station in
-							StationView(station: station)
+							StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
 								.listRowSeparator(.hidden)
 							Divider()
 						}
 					}
 					.listStyle(.plain)
 					.refreshable {
-						await viewModel.fetchStations()
+						viewModel.refresh()
 					}
 				}.onAppear {
 					viewModel.requestLocation()
+				}.onChange(of: scenePhase) { newPhase in
+					viewModel.reset()
 				}
 				
 				SplashScreen()

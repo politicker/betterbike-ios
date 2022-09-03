@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "848E982828BAEC8000E8C051"
                BuildableName = "Better Bike.app"
-               BlueprintName = "citibike-ios"
+               BlueprintName = "default"
                ReferencedContainer = "container:citibike-ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "848E982828BAEC8000E8C051"
             BuildableName = "Better Bike.app"
-            BlueprintName = "citibike-ios"
+            BlueprintName = "default"
             ReferencedContainer = "container:citibike-ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "848E982828BAEC8000E8C051"
             BuildableName = "Better Bike.app"
-            BlueprintName = "citibike-ios"
+            BlueprintName = "default"
             ReferencedContainer = "container:citibike-ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
