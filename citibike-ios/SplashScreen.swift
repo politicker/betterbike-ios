@@ -13,7 +13,7 @@ struct SplashScreen: View {
 			Image(systemName: "bicycle")
 				.foregroundColor(.blue)
 				.font(.system(size: 90))
-			Text("Better Citibike")
+			Text("Better Bike")
 				.font(.system(size: 42))
 				.fontWeight(.black)
 		}
