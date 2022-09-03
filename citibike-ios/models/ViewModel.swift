@@ -23,6 +23,7 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	let manager = CLLocationManager()
 	var location: CLLocationCoordinate2D?
 	var authorisationStatus: CLAuthorizationStatus = .notDetermined
+	var lastUpdatedTimer: Timer?
 	
 	var latitude: Double {
 		return location?.latitude ?? 40.7203835
@@ -43,9 +44,16 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		DispatchQueue.main.async {
 			switch result {
 			case .success(let response):
-				self.lastUpdated = response.shortDate
 				self.stations = response.stations
 				self.fetchError = ""
+
+				if let lastUpdatedTimer = self.lastUpdatedTimer {
+					lastUpdatedTimer.invalidate()
+				}
+
+				self.lastUpdatedTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+					self.lastUpdated = response.shortDate
+				}
 			case .failure(let error):
 				switch error {
 				case .serverError(let message):
