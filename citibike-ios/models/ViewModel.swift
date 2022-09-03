@@ -10,23 +10,24 @@ import CoreLocation
 import CoreLocationUI
 import MapKit
 import os
+import Combine
 
 let defaultLatitude = 40.7203835
 let defaultLongitude = -73.9548707
 
-class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+class ViewModel: NSObject, ObservableObject {
 	let logger = Logger(subsystem: "com.politicker-better-bikes.ViewModel", category: "ViewModel")
-
+	
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
 	@Published var locationFailed: Bool = false
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
 	
-	let manager = CLLocationManager()
 	var location: CLLocationCoordinate2D?
-	var authorisationStatus: CLAuthorizationStatus = .notDetermined
 	var lastUpdatedTimer: Timer?
+	var cancelLocation: AnyCancellable?
+	let locationService = LocationService()
 	
 	var latitude: Double {
 		return location?.latitude ?? 40.7203835
@@ -38,7 +39,29 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	
 	override init() {
 		super.init()
-		manager.delegate = self
+		
+		cancelLocation = locationService.$location.sink { result in
+			switch result {
+			case .success(let coordinate):
+				if self.location == nil {
+					self.location = coordinate
+					self.refresh()
+				} else {
+					self.location = coordinate
+				}
+			case .failure(let error):
+				switch error {
+				case .initial:
+					self.locationFailed = false
+				default:
+					self.locationFailed = true
+				}
+			}
+		}
+	}
+	
+	func requestLocation() {
+		locationService.requestLocation()
 	}
 	
 	func fetchStations() async -> Void {
@@ -50,11 +73,11 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 			case .success(let response):
 				self.stations = response.stations
 				self.fetchError = ""
-
+				
 				if let lastUpdatedTimer = self.lastUpdatedTimer {
 					lastUpdatedTimer.invalidate()
 				}
-
+				
 				self.lastUpdatedTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
 					self.lastUpdated = response.shortDate
 				}
@@ -71,27 +94,12 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 		}
 	}
 	
-	func requestAuthorisation(always: Bool = false) {
-		if always {
-			self.manager.requestAlwaysAuthorization()
-		} else {
-			self.manager.requestWhenInUseAuthorization()
-		}
-	}
-	
-	func requestLocation() {
-		manager.requestLocation()
-		
-		// I think this fetches location anytime the phone goes outside of a certain bound
-		manager.startUpdatingLocation()
-	}
-	
 	func populateStationRoutes() -> Void {
 		for station in stations {
 			Task {
 				logger.debug("calculating expected travel time for \(station.name)")
 				let expectedTravelTime = await calculateExpectedTravelTime(to: station)
-
+				
 				guard let expectedTravelTime = expectedTravelTime else {
 					return
 				}
@@ -112,34 +120,6 @@ class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	
 	func reset() {
 		location = nil
-	}
-}
-
-// MARK: Location Manager Delegate
-extension ViewModel {
-	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		if location == nil {
-			location = locations.first?.coordinate
-			refresh()
-		}
-
-		location = locations.first?.coordinate
-	}
-	
-	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-		print("error:: \(error.localizedDescription)")
-		self.locationFailed = true
-	}
-	
-	func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-		self.authorisationStatus = status
-		
-		if status == .authorizedWhenInUse || status == .authorizedAlways {
-			self.locationFailed = false
-			requestLocation()
-		} else {
-			self.locationFailed = true
-		}
 	}
 }
 
