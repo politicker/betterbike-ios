@@ -21,14 +21,7 @@ struct ServerError: Codable {
 
 let url = Bundle.main.object(forInfoDictionaryKey: "API_URL") as! String
 
-struct API {
-	func fetchStations(lat: Double, lon: Double, completion: @escaping (Result<Home, NetworkError>) -> ()) {
-		Task {
-			let result = await fetchStations(lat: lat, lon: lon)
-			completion(result)
-		}
-	}
-	
+struct API {	
 	func fetchStations(lat: Double, lon: Double) async -> Result<Home, NetworkError> {
 		guard let url = URL(string: url) else {
 			return .failure(.badUrl)
