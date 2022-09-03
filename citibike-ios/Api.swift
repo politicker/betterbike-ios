@@ -19,9 +19,11 @@ struct ServerError: Codable {
 	var error: String
 }
 
+let url = Bundle.main.object(forInfoDictionaryKey: "API_URL") as! String
+
 struct API {
 	func fetchStations(lat: Double, lon: Double, completion: @escaping (Result<Home, NetworkError>) -> ()) {
-		guard let url = URL(string: "http://localhost:8081") else {
+		guard let url = URL(string: url) else {
 			completion(.failure(.badUrl))
 			return
 		}

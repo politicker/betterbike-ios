@@ -26,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8451225728C3C4E400FC4F9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		848E982928BAEC8000E8C051 /* Better Bike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Better Bike.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = citibike_iosApp.swift; sourceTree = "<group>"; };
 		848E982E28BAEC8000E8C051 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 		848E982B28BAEC8000E8C051 /* citibike-ios */ = {
 			isa = PBXGroup;
 			children = (
+				8451225728C3C4E400FC4F9E /* Info.plist */,
 				848E984E28BBE21E00E8C051 /* models */,
 				848E983A28BAED4F00E8C051 /* StationView.swift */,
 				848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */,
@@ -318,14 +320,16 @@
 		848E983828BAEC8300E8C051 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				API_URL = "http://localhost:8081";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "citibike-ios/Info.plist";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allow us to use your location all the time";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow us to use your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -349,14 +353,16 @@
 		848E983928BAEC8300E8C051 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				API_URL = "https://bikes.politicker.info";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "citibike-ios/Info.plist";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allow us to use your location all the time";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow us to use your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
