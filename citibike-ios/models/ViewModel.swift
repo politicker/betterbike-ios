@@ -17,6 +17,8 @@ let defaultLongitude = -73.9548707
 class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 	let logger = Logger(subsystem: "com.politicker-better-bikes.ViewModel", category: "ViewModel")
 
+	static let shared = ViewModel()
+
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
 	@Published var locationFailed: Bool = false

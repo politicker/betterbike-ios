@@ -11,11 +11,15 @@ import CoreLocationUI
 
 struct ContentView: View {
 	@State var splashOpacity: Double = 1
-	@StateObject var viewModel = ViewModel()
+	@StateObject var viewModel = ViewModel.shared
 	@Environment(\.scenePhase) var scenePhase
 
 	init() {
 		UITableView.appearance().separatorColor = .clear
+	}
+
+	var userLocation: CLLocationCoordinate2D {
+		return CLLocationCoordinate2D(latitude: Double(viewModel.latitude), longitude: Double(viewModel.longitude))
 	}
 	
 	var body: some View {
@@ -35,7 +39,7 @@ struct ContentView: View {
 						}.padding()
 						List {
 							ForEach($viewModel.stations) { station in
-								NavigationLink(destination: StationDetailView(station: station.wrappedValue)) {
+								NavigationLink(destination: StationDetailView(station: station.wrappedValue, userLocation: Location(name: "you", coordinate: userLocation))) {
 									StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
 										.listRowSeparator(.hidden)
 								}

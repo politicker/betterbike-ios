@@ -7,29 +7,39 @@
 import SwiftUI
 import MapKit
 
+struct BackButton: View {
+	@Environment(\.presentationMode) var mode: Binding<PresentationMode>
+
+	var body: some View {
+		Button("Back") {
+			self.mode.wrappedValue.dismiss()
+		}
+		.foregroundColor(Color("Foreground"))
+		.padding()
+		.background(Color("Background"))
+		.clipShape(Capsule())
+	}
+}
+
 struct StationDetailView: View {
 	var station: Station
+	var userLocation: Location
 
-	@State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.7250541, longitude: -73.9527657), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
-
-	var locations: [Location] {
-		return [
-			Location(name: station.name, coordinate: CLLocationCoordinate2D(latitude: Double(station.lat), longitude: Double(station.lon))),
-			Location(name: "You", coordinate: CLLocationCoordinate2D(latitude: 40.7250541, longitude: -73.9527657))
-		]
+	var location: Location {
+		return Location(name: station.name, coordinate: CLLocationCoordinate2D(latitude: Double(station.lat), longitude: Double(station.lon)))
 	}
+
+	@State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: ViewModel.shared.latitude, longitude: ViewModel.shared.longitude), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
 
 	var body: some View {
 		VStack {
-			NavigationView {
-				Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in
-					MapAnnotation(coordinate: location.coordinate) {
-						Text(location.name)
-					}
-				}
-				//				.navigationTitle("London Explorer")
+			Map(coordinateRegion: $mapRegion, showsUserLocation: true, annotationItems: [location]) { location in
+				MapPin(coordinate: location.coordinate)
 			}
-			Text("Station Detail")
+			.navigationBarBackButtonHidden(true)
+			.navigationBarItems(leading: BackButton())
+			.ignoresSafeArea()
 		}
+		.navigationBarBackButtonHidden(true)
 	}
 }

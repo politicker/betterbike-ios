@@ -20,7 +20,7 @@ struct Bike: Decodable, Identifiable {
 			case "battery.100":
 				return Color.green
 			default:
-				return Color("BatteryIcon")
+				return Color("Foreground")
 		}
 	}
 }
