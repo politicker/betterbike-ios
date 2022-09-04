@@ -14,9 +14,9 @@ struct BackButton: View {
 		Button("Back") {
 			self.mode.wrappedValue.dismiss()
 		}
-		.foregroundColor(Color("Foreground"))
+		.foregroundColor(Color.foreground)
 		.padding()
-		.background(Color("Background"))
+		.background(Color.background)
 		.clipShape(Capsule())
 	}
 }
