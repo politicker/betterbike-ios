@@ -23,7 +23,6 @@ struct BackButton: View {
 
 struct StationDetailView: View {
 	var station: Station
-	var userLocation: Location
 
 	var location: Location {
 		return Location(name: station.name, coordinate: CLLocationCoordinate2D(latitude: Double(station.lat), longitude: Double(station.lon)))
