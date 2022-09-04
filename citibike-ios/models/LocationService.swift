@@ -44,7 +44,6 @@ class LocationService: NSObject, ObservableObject {
 // MARK: Location Manager Delegate
 extension LocationService: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
 		if let coordinate = locations.first?.coordinate {
 			location = .success(coordinate)
 		} else {

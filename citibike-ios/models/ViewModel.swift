@@ -32,11 +32,11 @@ class ViewModel: NSObject, ObservableObject {
 	let locationService = LocationService()
 	
 	var latitude: Double {
-		return location?.latitude ?? 40.7203835
+		return location?.latitude ?? defaultLatitude
 	}
 	
 	var longitude: Double {
-		return location?.longitude ?? -73.9548707
+		return location?.longitude ?? defaultLongitude
 	}
 	
 	override init() {
@@ -60,6 +60,10 @@ class ViewModel: NSObject, ObservableObject {
 				}
 			}
 		}
+	}
+
+	func requestLocationPermission() {
+		locationService.requestAuthorisation()
 	}
 	
 	func requestLocation() {
@@ -136,8 +140,7 @@ extension ViewModel {
 		let directions = MKDirections(request: request)
 		
 		do {
-			let response = try await directions.calculate()
-			return response
+			return try await directions.calculate()
 		} catch {
 			return nil
 		}

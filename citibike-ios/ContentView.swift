@@ -52,6 +52,7 @@ struct ContentView: View {
 							viewModel.refresh()
 						}
 					}.onAppear {
+						viewModel.requestLocationPermission()
 						viewModel.requestLocation()
 					}.onChange(of: scenePhase) { newPhase in
 						viewModel.reset()

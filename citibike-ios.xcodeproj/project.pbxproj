@@ -11,6 +11,7 @@
 		8451225B28C4119D00FC4F9E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225A28C4119D00FC4F9E /* Location.swift */; };
 		8451225D28C431C700FC4F9E /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225C28C431C700FC4F9E /* MapHelpers.swift */; };
 		8451225F28C4328100FC4F9E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225E28C4328100FC4F9E /* MapView.swift */; };
+		8451226128C4EF6700FC4F9E /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451226028C4EF6700FC4F9E /* Style.swift */; };
 		848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */; };
 		848E982F28BAEC8000E8C051 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E982E28BAEC8000E8C051 /* ContentView.swift */; };
 		848E983128BAEC8300E8C051 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848E983028BAEC8300E8C051 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 		8451225A28C4119D00FC4F9E /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		8451225C28C431C700FC4F9E /* MapHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHelpers.swift; sourceTree = "<group>"; };
 		8451225E28C4328100FC4F9E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		8451226028C4EF6700FC4F9E /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		848E982928BAEC8000E8C051 /* Better Bike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Better Bike.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = citibike_iosApp.swift; sourceTree = "<group>"; };
 		848E982E28BAEC8000E8C051 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,9 +102,9 @@
 				848E984A28BBE00900E8C051 /* ErrorView.swift */,
 				C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */,
 				8451225828C4117300FC4F9E /* StationDetailView.swift */,
-				8451225A28C4119D00FC4F9E /* Location.swift */,
 				8451225C28C431C700FC4F9E /* MapHelpers.swift */,
 				8451225E28C4328100FC4F9E /* MapView.swift */,
+				8451226028C4EF6700FC4F9E /* Style.swift */,
 			);
 			path = "citibike-ios";
 			sourceTree = "<group>";
@@ -118,6 +120,7 @@
 		848E984E28BBE21E00E8C051 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				8451225A28C4119D00FC4F9E /* Location.swift */,
 				C01CF8F528C3E1F300B1B349 /* StationRoute.swift */,
 				848E984C28BBE21300E8C051 /* ViewModel.swift */,
 				848E983E28BAEE0B00E8C051 /* Station.swift */,
@@ -211,6 +214,7 @@
 				8451225B28C4119D00FC4F9E /* Location.swift in Sources */,
 				848E984728BBBC6100E8C051 /* DateExtension.swift in Sources */,
 				848E983D28BAED9700E8C051 /* Bike.swift in Sources */,
+				8451226128C4EF6700FC4F9E /* Style.swift in Sources */,
 				848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */,
 				C01CF8F628C3E1F300B1B349 /* StationRoute.swift in Sources */,
 				848E984328BAF18E00E8C051 /* Home.swift in Sources */,
@@ -344,7 +348,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
@@ -378,7 +382,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"citibike-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = F69PT65JD5;
 				ENABLE_PREVIEWS = YES;
