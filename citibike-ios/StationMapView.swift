@@ -14,16 +14,16 @@ struct BackButton: View {
 		Button("Back") {
 			self.mode.wrappedValue.dismiss()
 		}
-		.foregroundColor(Color.foreground)
+		.foregroundColor(Color.background)
 		.padding()
-		.background(Color.background)
+		.background(Color.foreground)
 		.clipShape(Capsule())
 	}
 }
 
-struct StationDetailView: View {
+struct StationMapView: View {
 	var station: Station
-	var directions: StationRoute?
+	var route: StationRoute?
 
 	var location: Location {
 		return Location(name: station.name, coordinate: CLLocationCoordinate2D(latitude: Double(station.lat), longitude: Double(station.lon)))
@@ -34,7 +34,7 @@ struct StationDetailView: View {
 	}
 
 	var polyLine: MKPolyline? {
-		return directions?.directions.routes.first?.polyline
+		return route?.directions.routes.first?.polyline
 	}
 
 	var mapCenter: CLLocationCoordinate2D {
@@ -42,6 +42,7 @@ struct StationDetailView: View {
 	}
 
 	var coordinateRegion: MKCoordinateRegion {
+		// TODO: This hard-coded zoom level sometimes doesn't capture the full route
 		return MKCoordinateRegion(center: mapCenter, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
 	}
 

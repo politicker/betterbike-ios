@@ -49,9 +49,7 @@ struct API {
 		} catch {
 			return .failure(.unknownError(error.localizedDescription))
 		}
-		
-		var viewData: Home? = nil
-		
+
 		guard let response = response as? HTTPURLResponse else {
 			return .failure(.unknownError("could not unwrap response object"))
 		}
@@ -64,17 +62,12 @@ struct API {
 				return .failure(.unknownError("could not decode server error"))
 			}
 		}
-		
+
 		do {
-			viewData = try JSONDecoder().decode(Home.self, from: data!)
+			let viewData = try JSONDecoder().decode(Home.self, from: data!)
+			return .success(viewData)
 		} catch {
 			return .failure(.unknownError("could not decode server data"))
 		}
-		
-		guard let home = viewData else {
-			return .failure(.unknownError("could not unwrap server data"))
-		}
-		
-		return .success(home)
 	}
 }

@@ -10,8 +10,8 @@ import SwiftUI
 struct SplashScreen: View {
 	var body: some View {
 		VStack {
-			Image(systemName: "bicycle")
-				.foregroundColor(.blue)
+			Image(systemName: "bolt")
+				.foregroundColor(Color.brandGreen)
 				.font(.system(size: 90))
 			Text("Better Bike")
 				.font(.system(size: 42))

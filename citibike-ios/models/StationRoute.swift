@@ -24,6 +24,6 @@ struct StationRoute {
 
 		let minutes = (seconds / 60)
 		
-	  return String(format: "%.0f min", minutes)
+	  return String(format: "%.0f", minutes)
 	}
 }

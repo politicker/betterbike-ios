@@ -13,11 +13,11 @@ struct ContentView: View {
 	@State var splashOpacity: Double = 1
 	@StateObject var viewModel = ViewModel.shared
 	@Environment(\.scenePhase) var scenePhase
-
+	
 	init() {
 		UITableView.appearance().separatorColor = .clear
 	}
-
+	
 	var userLocation: CLLocationCoordinate2D {
 		return CLLocationCoordinate2D(latitude: Double(viewModel.latitude), longitude: Double(viewModel.longitude))
 	}
@@ -30,28 +30,29 @@ struct ContentView: View {
 				ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
 			} else {
 				NavigationView {
-					VStack(alignment: .leading) {
-						HStack {
-							Spacer()
-							Text("Updated \(viewModel.lastUpdated)")
-								.font(.subheadline)
-								.foregroundColor(.gray)
-						}.padding()
+					VStack {
 						List {
 							ForEach($viewModel.stations) { station in
-								NavigationLink(destination: StationDetailView(station: station.wrappedValue, directions: viewModel.stationRoutes[station.id])) {
-									StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
+								NavigationLink(destination: StationMapView(station: station.wrappedValue, route: viewModel.stationRoutes[station.id])) {
+									StationListCellView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
 										.listRowSeparator(.hidden)
 								}
 								Divider()
 							}
+							
+							Text("Updated \(viewModel.lastUpdated)")
+								.font(.subheadline)
+								.foregroundColor(.gray)
+								.frame(maxWidth: .infinity, alignment: .center)
 						}
 						.navigationBarHidden(true)
 						.listStyle(.plain)
 						.refreshable {
 							viewModel.refresh()
 						}
-					}.onAppear {
+						.padding(.top)
+					}
+					.onAppear {
 						viewModel.requestLocationPermission()
 						viewModel.requestLocation()
 					}.onChange(of: scenePhase) { newPhase in

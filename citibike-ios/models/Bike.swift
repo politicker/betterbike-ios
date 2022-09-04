@@ -16,9 +16,9 @@ struct Bike: Decodable, Identifiable {
 	func batteryColor() -> Color {
 		switch batteryIcon {
 			case "battery.25":
-				return Color.red
+				return Color.bikeBatteryLow
 			case "battery.100":
-				return Color.green
+				return Color.primaryGreen
 			default:
 				return Color("Foreground")
 		}
