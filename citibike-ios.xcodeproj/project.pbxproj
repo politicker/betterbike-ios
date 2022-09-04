@@ -25,6 +25,7 @@
 		C01CF8EE28BC07C800B1B349 /* ErrorLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */; };
 		C01CF8F028BC0E1900B1B349 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C01CF8EF28BC0E1900B1B349 /* Settings.bundle */; };
 		C01CF8F628C3E1F300B1B349 /* StationRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01CF8F528C3E1F300B1B349 /* StationRoute.swift */; };
+		C075CB0628C4171800A31A57 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C075CB0528C4171800A31A57 /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorLocationView.swift; sourceTree = "<group>"; };
 		C01CF8EF28BC0E1900B1B349 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C01CF8F528C3E1F300B1B349 /* StationRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationRoute.swift; sourceTree = "<group>"; };
+		C075CB0528C4171800A31A57 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				848E983E28BAEE0B00E8C051 /* Station.swift */,
 				848E983C28BAED9700E8C051 /* Bike.swift */,
 				848E984228BAF18E00E8C051 /* Home.swift */,
+				C075CB0528C4171800A31A57 /* LocationService.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C075CB0628C4171800A31A57 /* LocationService.swift in Sources */,
 				848E984128BAEF0100E8C051 /* Api.swift in Sources */,
 				848E982F28BAEC8000E8C051 /* ContentView.swift in Sources */,
 				848E983F28BAEE0B00E8C051 /* Station.swift in Sources */,
