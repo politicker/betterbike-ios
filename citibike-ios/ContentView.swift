@@ -39,7 +39,7 @@ struct ContentView: View {
 						}.padding()
 						List {
 							ForEach($viewModel.stations) { station in
-								NavigationLink(destination: StationDetailView(station: station.wrappedValue)) {
+								NavigationLink(destination: StationDetailView(station: station.wrappedValue, directions: viewModel.stationRoutes[station.id])) {
 									StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
 										.listRowSeparator(.hidden)
 								}

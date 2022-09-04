@@ -100,14 +100,14 @@ class ViewModel: NSObject, ObservableObject {
 		for station in stations {
 			Task {
 				logger.debug("calculating expected travel time for \(station.name)")
-				let expectedTravelTime = await calculateExpectedTravelTime(to: station)
+				let directions = await calculateExpectedTravelTime(to: station)
 				
-				guard let expectedTravelTime = expectedTravelTime else {
+				guard let directions = directions else {
 					return
 				}
 				
 				DispatchQueue.main.async {
-					self.stationRoutes[station.id] = StationRoute(expectedTravelTime: expectedTravelTime)
+					self.stationRoutes[station.id] = StationRoute(directions: directions)
 				}
 			}
 		}
@@ -127,29 +127,19 @@ class ViewModel: NSObject, ObservableObject {
 
 // MARK: Calculate station distance {
 extension ViewModel {
-	public func calculateExpectedTravelTime(to station: Station) async -> TimeInterval? {
+	public func calculateExpectedTravelTime(to station: Station) async -> MKDirections.Response? {
 		let request = MKDirections.Request()
 		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), addressDictionary: nil))
 		request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(station.lat), longitude: CLLocationDegrees(station.lon)), addressDictionary: nil))
 		request.transportType = .walking
 		
 		let directions = MKDirections(request: request)
-		var response: MKDirections.Response?
 		
 		do {
-			response = try await directions.calculate()
+			let response = try await directions.calculate()
+			return response
 		} catch {
 			return nil
 		}
-		
-		guard let unwrappedResponse = response else {
-			return nil
-		}
-		
-		guard let expectedTravelTime = unwrappedResponse.routes.first?.expectedTravelTime else {
-			return nil
-		}
-		
-		return expectedTravelTime
 	}
 }
