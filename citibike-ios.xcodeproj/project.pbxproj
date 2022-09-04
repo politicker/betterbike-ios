@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8451225928C4117300FC4F9E /* StationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225828C4117300FC4F9E /* StationDetailView.swift */; };
+		8451225B28C4119D00FC4F9E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225A28C4119D00FC4F9E /* Location.swift */; };
+		8451225D28C431C700FC4F9E /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225C28C431C700FC4F9E /* MapHelpers.swift */; };
+		8451225F28C4328100FC4F9E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225E28C4328100FC4F9E /* MapView.swift */; };
 		848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */; };
 		848E982F28BAEC8000E8C051 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E982E28BAEC8000E8C051 /* ContentView.swift */; };
 		848E983128BAEC8300E8C051 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848E983028BAEC8300E8C051 /* Assets.xcassets */; };
@@ -28,6 +32,10 @@
 
 /* Begin PBXFileReference section */
 		8451225728C3C4E400FC4F9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8451225828C4117300FC4F9E /* StationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailView.swift; sourceTree = "<group>"; };
+		8451225A28C4119D00FC4F9E /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		8451225C28C431C700FC4F9E /* MapHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHelpers.swift; sourceTree = "<group>"; };
+		8451225E28C4328100FC4F9E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		848E982928BAEC8000E8C051 /* Better Bike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Better Bike.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848E982C28BAEC8000E8C051 /* citibike_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = citibike_iosApp.swift; sourceTree = "<group>"; };
 		848E982E28BAEC8000E8C051 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -91,6 +99,10 @@
 				848E983228BAEC8300E8C051 /* Preview Content */,
 				848E984A28BBE00900E8C051 /* ErrorView.swift */,
 				C01CF8ED28BC07C800B1B349 /* ErrorLocationView.swift */,
+				8451225828C4117300FC4F9E /* StationDetailView.swift */,
+				8451225A28C4119D00FC4F9E /* Location.swift */,
+				8451225C28C431C700FC4F9E /* MapHelpers.swift */,
+				8451225E28C4328100FC4F9E /* MapView.swift */,
 			);
 			path = "citibike-ios";
 			sourceTree = "<group>";
@@ -194,6 +206,9 @@
 				C01CF8EE28BC07C800B1B349 /* ErrorLocationView.swift in Sources */,
 				848E984B28BBE00900E8C051 /* ErrorView.swift in Sources */,
 				848E983B28BAED4F00E8C051 /* StationView.swift in Sources */,
+				8451225F28C4328100FC4F9E /* MapView.swift in Sources */,
+				8451225928C4117300FC4F9E /* StationDetailView.swift in Sources */,
+				8451225B28C4119D00FC4F9E /* Location.swift in Sources */,
 				848E984728BBBC6100E8C051 /* DateExtension.swift in Sources */,
 				848E983D28BAED9700E8C051 /* Bike.swift in Sources */,
 				848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */,
@@ -201,6 +216,7 @@
 				848E984328BAF18E00E8C051 /* Home.swift in Sources */,
 				848E984D28BBE21300E8C051 /* ViewModel.swift in Sources */,
 				848E984928BBD27200E8C051 /* SplashScreen.swift in Sources */,
+				8451225D28C431C700FC4F9E /* MapHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

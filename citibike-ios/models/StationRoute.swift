@@ -6,16 +6,23 @@
 //
 
 import Foundation
+import CoreLocation
+import CoreLocationUI
+import MapKit
 
 struct StationRoute {
-	var expectedTravelTime: TimeInterval
+	var directions: MKDirections.Response
 	
-	init(expectedTravelTime: TimeInterval) {
-		self.expectedTravelTime = expectedTravelTime
+	init(directions: MKDirections.Response) {
+		self.directions = directions
 	}
 	
 	var travelTimeInMinutes: String {
-		let minutes = (expectedTravelTime / 60)
+		guard let seconds = directions.routes.first?.expectedTravelTime else {
+			return ""
+		}
+
+		let minutes = (seconds / 60)
 		
 	  return String(format: "%.0f min", minutes)
 	}

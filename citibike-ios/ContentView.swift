@@ -11,8 +11,16 @@ import CoreLocationUI
 
 struct ContentView: View {
 	@State var splashOpacity: Double = 1
-	@StateObject var viewModel = ViewModel()
+	@StateObject var viewModel = ViewModel.shared
 	@Environment(\.scenePhase) var scenePhase
+
+	init() {
+		UITableView.appearance().separatorColor = .clear
+	}
+
+	var userLocation: CLLocationCoordinate2D {
+		return CLLocationCoordinate2D(latitude: Double(viewModel.latitude), longitude: Double(viewModel.longitude))
+	}
 	
 	var body: some View {
 		ZStack {
@@ -21,29 +29,36 @@ struct ContentView: View {
 			} else if viewModel.fetchError != "" {
 				ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
 			} else {
-				VStack(alignment: .leading) {
-					HStack {
-						Spacer()
-						Text("Updated \(viewModel.lastUpdated)")
-							.font(.subheadline)
-							.foregroundColor(.gray)
-					}.padding()
-					List {
-						ForEach($viewModel.stations) { station in
-							StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
-								.listRowSeparator(.hidden)
-							Divider()
+				NavigationView {
+					VStack(alignment: .leading) {
+						HStack {
+							Spacer()
+							Text("Updated \(viewModel.lastUpdated)")
+								.font(.subheadline)
+								.foregroundColor(.gray)
+						}.padding()
+						List {
+							ForEach($viewModel.stations) { station in
+								NavigationLink(destination: StationDetailView(station: station.wrappedValue, directions: viewModel.stationRoutes[station.id])) {
+									StationView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
+										.listRowSeparator(.hidden)
+								}
+								Divider()
+							}
 						}
+						.navigationBarHidden(true)
+						.listStyle(.plain)
+						.refreshable {
+							viewModel.refresh()
+						}
+					}.onAppear {
+						viewModel.requestLocation()
+					}.onChange(of: scenePhase) { newPhase in
+						viewModel.reset()
 					}
-					.listStyle(.plain)
-					.refreshable {
-						viewModel.refresh()
-					}
-				}.onAppear {
-					viewModel.requestLocation()
-				}.onChange(of: scenePhase) { newPhase in
-					viewModel.reset()
 				}
+				.buttonStyle(.plain)
+				
 				
 				SplashScreen()
 					.opacity(viewModel.stations.isEmpty ? 1 : 0)
