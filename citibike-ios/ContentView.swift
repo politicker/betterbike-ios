@@ -23,7 +23,13 @@ struct ContentView: View {
 			if viewModel.locationFailed {
 				ErrorLocationView()
 			} else if viewModel.fetchError != "" {
-				ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
+				ErrorView(message: viewModel.fetchError) {
+					if let coordinate = viewModel.location {
+						Task {
+							await viewModel.fetchStations(coordinate: coordinate)
+						}
+					}
+				}
 			} else {
 				NavigationView {
 					VStack {
@@ -60,7 +66,9 @@ struct ContentView: View {
 						.navigationBarHidden(true)
 						.listStyle(.plain)
 						.refreshable {
-							viewModel.refresh()
+							if let coordinate = viewModel.location {
+								viewModel.refresh(coordinate: coordinate)
+							}
 						}
 						.padding(.top)
 					}

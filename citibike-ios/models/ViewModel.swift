@@ -36,7 +36,7 @@ class ViewModel: NSObject, ObservableObject {
 			case .success(let coordinate):
 				if self.location == nil {
 					self.location = coordinate
-					self.refresh()
+					self.refresh(coordinate: coordinate)
 				} else {
 					self.location = coordinate
 				}
@@ -59,16 +59,11 @@ class ViewModel: NSObject, ObservableObject {
 		locationService.requestLocation()
 	}
 	
-	func fetchStations() async -> Void {
+	func fetchStations(coordinate: CLLocationCoordinate2D) async -> Void {
 		logger.debug("fetching stations")
 		
-		if let coordinate = location {
-			let result = await API().fetchStations(coordinate: coordinate)
-			handleFetchResult(result: result)
-		}
-	}
-	
-	private func handleFetchResult(result: Result<Home, NetworkError>) {
+		let result = await API().fetchStations(coordinate: coordinate)
+
 		DispatchQueue.main.async {
 			switch result {
 			case .success(let response):
@@ -118,9 +113,9 @@ class ViewModel: NSObject, ObservableObject {
 	}
 	
 	
-	func refresh() {
+	func refresh(coordinate: CLLocationCoordinate2D) {
 		Task {
-			await fetchStations()
+			await fetchStations(coordinate: coordinate)
 			populateStationRoutes()
 		}
 	}
