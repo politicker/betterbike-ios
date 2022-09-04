@@ -12,9 +12,6 @@ import MapKit
 import os
 import Combine
 
-let defaultLatitude = 40.7203835
-let defaultLongitude = -73.9548707
-
 class ViewModel: NSObject, ObservableObject {
 	let logger = Logger(subsystem: "com.politicker-better-bikes.ViewModel", category: "ViewModel")
 
@@ -30,14 +27,6 @@ class ViewModel: NSObject, ObservableObject {
 	var lastUpdatedTimer: Timer?
 	var cancelLocation: AnyCancellable?
 	let locationService = LocationService()
-	
-	var latitude: Double {
-		return location?.latitude ?? defaultLatitude
-	}
-	
-	var longitude: Double {
-		return location?.longitude ?? defaultLongitude
-	}
 	
 	override init() {
 		super.init()
@@ -72,8 +61,14 @@ class ViewModel: NSObject, ObservableObject {
 	
 	func fetchStations() async -> Void {
 		logger.debug("fetching stations")
-		let result = await API().fetchStations(lat: latitude, lon: longitude)
 		
+		if let coordinate = location {
+			let result = await API().fetchStations(coordinate: coordinate)
+			handleFetchResult(result: result)
+		}
+	}
+	
+	private func handleFetchResult(result: Result<Home, NetworkError>) {
 		DispatchQueue.main.async {
 			switch result {
 			case .success(let response):
@@ -104,18 +99,24 @@ class ViewModel: NSObject, ObservableObject {
 		for station in stations {
 			Task {
 				logger.debug("calculating expected travel time for \(station.name)")
-				let directions = await calculateExpectedTravelTime(to: station)
+				var directions: MKDirections.Response?
 				
-				guard let directions = directions else {
+				if let coordinate = location {
+					directions = await Location(name: "", coordinate: coordinate)
+						.calculateExpectedTravelTime(to: station)
+				}
+				
+				guard let dirs = directions else {
 					return
 				}
 				
 				DispatchQueue.main.async {
-					self.stationRoutes[station.id] = StationRoute(directions: directions)
+					self.stationRoutes[station.id] = StationRoute(directions: dirs)
 				}
 			}
 		}
 	}
+	
 	
 	func refresh() {
 		Task {
@@ -131,18 +132,4 @@ class ViewModel: NSObject, ObservableObject {
 
 // MARK: Calculate station distance {
 extension ViewModel {
-	public func calculateExpectedTravelTime(to station: Station) async -> MKDirections.Response? {
-		let request = MKDirections.Request()
-		request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), addressDictionary: nil))
-		request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(station.lat), longitude: CLLocationDegrees(station.lon)), addressDictionary: nil))
-		request.transportType = .walking
-		
-		let directions = MKDirections(request: request)
-		
-		do {
-			return try await directions.calculate()
-		} catch {
-			return nil
-		}
-	}
 }

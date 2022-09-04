@@ -22,7 +22,7 @@ struct ServerError: Codable {
 let url = Bundle.main.object(forInfoDictionaryKey: "API_URL") as! String
 
 struct API {	
-	func fetchStations(lat: Double, lon: Double) async -> Result<Home, NetworkError> {
+	func fetchStations(coordinate: CLLocationCoordinate2D) async -> Result<Home, NetworkError> {
 		guard let url = URL(string: url) else {
 			return .failure(.badUrl)
 		}
@@ -30,7 +30,7 @@ struct API {
 		var request = URLRequest(url: url)
 		request.setValue("application/json", forHTTPHeaderField: "content-type")
 		
-		let json: [String: Any] = ["Lat": lat, "Lon": lon]
+		let json: [String: Any] = ["Lat": coordinate.latitude, "Lon": coordinate.longitude]
 		var jsonData: Data?
 		do {
 			jsonData = try JSONSerialization.data(withJSONObject: json)

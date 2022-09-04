@@ -18,10 +18,6 @@ struct ContentView: View {
 		UITableView.appearance().separatorColor = .clear
 	}
 	
-	var userLocation: CLLocationCoordinate2D {
-		return CLLocationCoordinate2D(latitude: Double(viewModel.latitude), longitude: Double(viewModel.longitude))
-	}
-	
 	var body: some View {
 		ZStack {
 			if viewModel.locationFailed {
@@ -33,10 +29,26 @@ struct ContentView: View {
 					VStack {
 						List {
 							ForEach($viewModel.stations) { station in
-								NavigationLink(destination: StationMapView(station: station.wrappedValue, route: viewModel.stationRoutes[station.id])) {
-									StationListCellView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
-										.listRowSeparator(.hidden)
+								let cellView = StationListCellView(
+									station: station.wrappedValue,
+									stationRoute: viewModel.stationRoutes[station.id]
+								)
+									.listRowSeparator(.hidden)
+
+								if let userCoordinate = viewModel.location {
+									NavigationLink(
+										destination: StationMapView(
+											station: station.wrappedValue,
+											route: viewModel.stationRoutes[station.id],
+											userCoordinate: userCoordinate
+										)
+									) {
+										cellView
+									}
+								} else {
+									cellView
 								}
+
 								Divider()
 							}
 							

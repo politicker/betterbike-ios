@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Station: Decodable, Identifiable {
 	var id: String
@@ -22,5 +23,9 @@ struct Station: Decodable, Identifiable {
 		case bikes
 		case lat
 		case lon
+	}
+	
+	var coordinate: CLLocationCoordinate2D {
+		CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lon))
 	}
 }
