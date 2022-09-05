@@ -34,12 +34,12 @@ struct BikeListView: View {
 	
 	func batteryColor(bike: Bike) -> Color {
 		switch bike.batteryIcon {
-		case "battery.25":
-			return Color.bikeBatteryLow
-		case "battery.100":
-			return Color.primaryGreen
-		default:
-			return Color("Foreground")
+			case "battery.25":
+				return Color.bikeBatteryLow
+			case "battery.100":
+				return Color.primaryGreen
+			default:
+				return Color("Foreground")
 		}
 	}
 }
@@ -99,7 +99,6 @@ struct StationCellView: View {
 		}
 	}
 }
-
 
 struct StationCellView_Previews: PreviewProvider {
 	static var previews: some View {

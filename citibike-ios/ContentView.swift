@@ -29,21 +29,18 @@ struct ContentView: View {
 			} else if viewModel.fetchError != "" {
 				ErrorView(message: viewModel.fetchError) {
 					if let coordinate = viewModel.location {
-						Task {
-							await viewModel.fetchStations(coordinate: coordinate)
-						}
+						viewModel.refresh(coordinate: coordinate)
 					}
 				}
 			} else {
 				NavigationView {
-					VStack {
+					VStack(spacing: 0) {
 						List {
 							ForEach($viewModel.stations) { station in
 								let cellView = StationCellView(
 									station: station.wrappedValue,
 									stationRoute: viewModel.stationRoutes[station.id]
 								)
-									.listRowSeparator(.hidden)
 								if let userCoordinate = viewModel.location {
 									NavigationLink(
 										destination: StationMapView(
@@ -59,7 +56,6 @@ struct ContentView: View {
 								}
 
 								Divider()
-									.padding(0.5)
 							}
 
 							Text("Updated \(viewModel.lastUpdated)")
@@ -80,8 +76,10 @@ struct ContentView: View {
 						viewModel.requestLocationPermission()
 						viewModel.requestLocation()
 					}.onChange(of: scenePhase) { newPhase in
-						if newPhase == .background {
-							viewModel.reset()
+						if newPhase == .active {
+							if let location = viewModel.location {
+								viewModel.refresh(coordinate: location)
+							}
 						}
 					}
 				}

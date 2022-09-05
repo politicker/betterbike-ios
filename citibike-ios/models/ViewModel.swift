@@ -23,11 +23,7 @@ class ViewModel: NSObject, ObservableObject {
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
 	
-	var location: CLLocationCoordinate2D? {
-		didSet {
-			populateStationRoutes()
-		}
-	}
+	var location: CLLocationCoordinate2D?
 
 	var lastUpdatedTimer: Timer?
 	var cancelLocation: AnyCancellable?
@@ -36,24 +32,26 @@ class ViewModel: NSObject, ObservableObject {
 	override init() {
 		super.init()
 		
-		cancelLocation = locationService.$location.sink { result in
-			switch result {
-				case .success(let coordinate):
-					if self.location == nil {
-						self.location = coordinate
-						self.refresh(coordinate: coordinate)
-					} else {
-						self.location = coordinate
-					}
-				case .failure(let error):
-					switch error {
-						case .initial:
-							self.locationFailed = false
-						default:
-							self.locationFailed = true
-					}
+		cancelLocation = locationService
+			.$location
+			.sink { result in
+				switch result {
+					case .success(let coordinate):
+						if self.location == nil {
+							self.location = coordinate
+							self.refresh(coordinate: coordinate)
+						} else {
+							self.location = coordinate
+						}
+					case .failure(let error):
+						switch error {
+							case .initial:
+								self.locationFailed = false
+							default:
+								self.locationFailed = true
+						}
+				}
 			}
-		}
 	}
 
 	func requestLocationPermission() {
@@ -63,22 +61,9 @@ class ViewModel: NSObject, ObservableObject {
 	func requestLocation() {
 		locationService.requestLocation()
 	}
-	
-	func fetchStations(coordinate: CLLocationCoordinate2D) async -> Result<Home, NetworkError> {
-		logger.debug("fetching stations")
-		
-		let result = await API().fetchStations(coordinate: coordinate)
-
-		switch result {
-			case .success(let response):
-				return .success(response)
-			case .failure(let error):
-				return .failure(error)
-		}
-	}
 
 	// TODO: use `async let` to spin these off concurrently
-	func populateStationRoutes() -> Void {
+	func populateStationRoutes(_ stations: [Station]) -> Void {
 		for station in stations {
 			Task {
 				logger.debug("calculating expected travel time for \(station.name)")
@@ -102,12 +87,15 @@ class ViewModel: NSObject, ObservableObject {
 	
 	func refresh(coordinate: CLLocationCoordinate2D) {
 		Task {
-			let response = await fetchStations(coordinate: coordinate)
+			let response = await API().fetchStations(coordinate: coordinate)
+
 			DispatchQueue.main.async {
 				switch response {
 					case .success(let data):
 						self.stations = data.stations
 						self.fetchError = ""
+
+						self.populateStationRoutes(data.stations)
 
 						if let lastUpdatedTimer = self.lastUpdatedTimer {
 							lastUpdatedTimer.invalidate()
