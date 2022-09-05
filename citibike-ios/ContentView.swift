@@ -16,31 +16,31 @@ struct ContentView: View {
 	
 	init() {
 		UITableView.appearance().separatorColor = .clear
+		UITableView.appearance().backgroundColor = .clear
+		UITableViewCell.appearance().backgroundColor = .clear
 	}
 	
 	var body: some View {
 		ZStack {
+			Color.background
+				.ignoresSafeArea(.all)
 			if viewModel.locationFailed {
 				ErrorLocationView()
 			} else if viewModel.fetchError != "" {
 				ErrorView(message: viewModel.fetchError) {
 					if let coordinate = viewModel.location {
-						Task {
-							await viewModel.fetchStations(coordinate: coordinate)
-						}
+						viewModel.refresh(coordinate: coordinate)
 					}
 				}
 			} else {
 				NavigationView {
-					VStack {
+					VStack(spacing: 0) {
 						List {
 							ForEach($viewModel.stations) { station in
-								let cellView = StationListCellView(
+								let cellView = StationCellView(
 									station: station.wrappedValue,
 									stationRoute: viewModel.stationRoutes[station.id]
 								)
-									.listRowSeparator(.hidden)
-
 								if let userCoordinate = viewModel.location {
 									NavigationLink(
 										destination: StationMapView(
@@ -48,7 +48,7 @@ struct ContentView: View {
 											route: viewModel.stationRoutes[station.id],
 											userCoordinate: userCoordinate
 										)
-									) {
+									)	{
 										cellView
 									}
 								} else {
@@ -57,7 +57,7 @@ struct ContentView: View {
 
 								Divider()
 							}
-							
+
 							Text("Updated \(viewModel.lastUpdated)")
 								.font(.subheadline)
 								.foregroundColor(.gray)
@@ -76,12 +76,16 @@ struct ContentView: View {
 						viewModel.requestLocationPermission()
 						viewModel.requestLocation()
 					}.onChange(of: scenePhase) { newPhase in
-						viewModel.reset()
+						if newPhase == .active {
+							if let location = viewModel.location {
+								viewModel.refresh(coordinate: location)
+							}
+						}
 					}
 				}
 				.buttonStyle(.plain)
-				
-				
+
+
 				SplashScreen()
 					.opacity(viewModel.stations.isEmpty ? 1 : 0)
 					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)

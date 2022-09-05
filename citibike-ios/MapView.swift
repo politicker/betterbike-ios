@@ -24,6 +24,7 @@ struct MapView: UIViewRepresentable {
 
 		if let polyLine = polyLine {
 			mapView.addOverlay(polyLine)
+			setMapRegion(mapView: mapView, rect: polyLine.boundingMapRect)
 		}
 
 		return mapView
@@ -37,6 +38,19 @@ struct MapView: UIViewRepresentable {
 		Coordinator(self)
 	}
 
+	private func setMapRegion(mapView: MKMapView, rect: MKMapRect) {
+		var region = rect
+		let wPadding = region.size.width * 0.25
+		let hPadding = region.size.height * 0.25
+
+		region.size.width += wPadding
+		region.size.height += hPadding
+
+		region.origin.x -= wPadding / 2
+		region.origin.y -= hPadding / 2
+
+		mapView.setRegion(MKCoordinateRegion(region), animated: true)
+	}
 }
 
 class Coordinator: NSObject, MKMapViewDelegate {
