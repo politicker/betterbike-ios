@@ -14,7 +14,7 @@ struct BikeListView: View {
 		if bikes.count > 5 {
 			return Array(bikes[...4])
 		}
-
+		
 		return bikes
 	}
 	
@@ -31,15 +31,15 @@ struct BikeListView: View {
 			}
 		}
 	}
-
+	
 	func batteryColor(bike: Bike) -> Color {
 		switch bike.batteryIcon {
-			case "battery.25":
-				return Color.bikeBatteryLow
-			case "battery.100":
-				return Color.primaryGreen
-			default:
-				return Color("Foreground")
+		case "battery.25":
+			return Color.bikeBatteryLow
+		case "battery.100":
+			return Color.primaryGreen
+		default:
+			return Color("Foreground")
 		}
 	}
 }
@@ -62,18 +62,17 @@ struct StationCellView: View {
 	var stationRoute: StationRoute?
 	
 	var body: some View {
-		HStack() {
+		HStack(alignment: .top) {
 			BikeCount(count: station.bikeCount)
 				.padding(.trailing, 6)
-				.frame(maxHeight: .infinity)
-
+			
 			VStack(alignment: .leading) {
 				HStack {
 					VStack(alignment: .leading) {
 						Text(station.name)
 							.font(.title3)
 							.fontWeight(.bold)
-
+						
 						if let travelTime = stationRoute?.travelTimeInMinutes {
 							Text("\(travelTime) min walk")
 								.font(.body)
@@ -82,7 +81,7 @@ struct StationCellView: View {
 						}
 					}
 				}
-
+				
 				BikeListView(bikes: station.bikes)
 			}
 		}
@@ -95,7 +94,7 @@ struct StationCellView_Previews: PreviewProvider {
 		VStack {
 			Spacer()
 				.frame(maxHeight: .infinity)
-
+			
 			StationCellView(
 				station: Station(
 					id: "test",
