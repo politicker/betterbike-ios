@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct BikeListView: View {
 	var bikes: [Bike]
 	var displayableBikes: [Bike] {
@@ -19,7 +18,7 @@ struct BikeListView: View {
 	}
 	
 	var body: some View {
-		VStack(alignment: .leading) {
+		VStack(alignment: .leading, spacing: 5) {
 			ForEach(displayableBikes) { bike in
 				HStack {
 					Image(systemName: bike.batteryIcon)
@@ -66,6 +65,7 @@ struct StationHeader: View {
 			Text(station.name)
 				.font(.title3)
 				.fontWeight(.bold)
+				.lineLimit(1)
 
 			if let travelTime = stationRoute?.travelTimeInMinutes {
 				Text("\(travelTime) min walk")
@@ -89,11 +89,12 @@ struct StationCellView: View {
 	var body: some View {
 		HStack(alignment: .top) {
 			BikeCount(count: station.bikeCount)
+				.padding(.top, 5)
 				.padding(.trailing, 6)
 
 			VStack(alignment: .leading) {
 				StationHeader(station: station, stationRoute: stationRoute)
-				Spacer()
+					.padding(.vertical, 5)
 				BikeListView(bikes: station.bikes)
 			}
 		}
