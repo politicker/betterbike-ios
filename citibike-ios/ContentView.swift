@@ -18,25 +18,43 @@ struct ContentView: View {
 		UITableView.appearance().separatorColor = .clear
 	}
 	
-	var userLocation: CLLocationCoordinate2D {
-		return CLLocationCoordinate2D(latitude: Double(viewModel.latitude), longitude: Double(viewModel.longitude))
-	}
-	
 	var body: some View {
 		ZStack {
 			if viewModel.locationFailed {
 				ErrorLocationView()
 			} else if viewModel.fetchError != "" {
-				ErrorView(message: viewModel.fetchError, refetch: viewModel.fetchStations)
+				ErrorView(message: viewModel.fetchError) {
+					if let coordinate = viewModel.location {
+						Task {
+							await viewModel.fetchStations(coordinate: coordinate)
+						}
+					}
+				}
 			} else {
 				NavigationView {
 					VStack {
 						List {
 							ForEach($viewModel.stations) { station in
-								NavigationLink(destination: StationMapView(station: station.wrappedValue, route: viewModel.stationRoutes[station.id])) {
-									StationCellView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
-										.listRowSeparator(.hidden)
+								let cellView = StationCellView(
+									station: station.wrappedValue,
+									stationRoute: viewModel.stationRoutes[station.id]
+								)
+									.listRowSeparator(.hidden)
+
+								if let userCoordinate = viewModel.location {
+									NavigationLink(
+										destination: StationMapView(
+											station: station.wrappedValue,
+											route: viewModel.stationRoutes[station.id],
+											userCoordinate: userCoordinate
+										)
+									) {
+										cellView
+									}
+								} else {
+									cellView
 								}
+
 								Divider()
 							}
 							
@@ -48,7 +66,9 @@ struct ContentView: View {
 						.navigationBarHidden(true)
 						.listStyle(.plain)
 						.refreshable {
-							viewModel.refresh()
+							if let coordinate = viewModel.location {
+								viewModel.refresh(coordinate: coordinate)
+							}
 						}
 						.padding(.top)
 					}

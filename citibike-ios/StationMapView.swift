@@ -24,13 +24,10 @@ struct BackButton: View {
 struct StationMapView: View {
 	var station: Station
 	var route: StationRoute?
+	var userCoordinate: CLLocationCoordinate2D
 
 	var location: Location {
-		return Location(name: station.name, coordinate: CLLocationCoordinate2D(latitude: Double(station.lat), longitude: Double(station.lon)))
-	}
-
-	var userLocation: CLLocationCoordinate2D {
-		return CLLocationCoordinate2D(latitude: ViewModel.shared.latitude, longitude: ViewModel.shared.longitude)
+		return Location(name: station.name, coordinate: station.coordinate)
 	}
 
 	var polyLine: MKPolyline? {
@@ -38,12 +35,15 @@ struct StationMapView: View {
 	}
 
 	var mapCenter: CLLocationCoordinate2D {
-		return geographicMidpoint(between: [location.coordinate, userLocation])
+		return geographicMidpoint(between: [location.coordinate, userCoordinate])
 	}
 
 	var coordinateRegion: MKCoordinateRegion {
 		// TODO: This hard-coded zoom level sometimes doesn't capture the full route
-		return MKCoordinateRegion(center: mapCenter, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+		return MKCoordinateRegion(
+			center: mapCenter,
+			span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+		)
 	}
 
 	var body: some View {
