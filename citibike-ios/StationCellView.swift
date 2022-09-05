@@ -62,13 +62,13 @@ struct StationCellView: View {
 	var stationRoute: StationRoute?
 	
 	var body: some View {
-		VStack(alignment: .leading) {
+		HStack() {
+			BikeCount(count: station.bikeCount)
+				.padding(.trailing, 6)
+				.frame(maxHeight: .infinity)
+
 			VStack(alignment: .leading) {
 				HStack {
-					BikeCount(count: station.bikeCount)
-						.padding(.trailing, 6)
-						.frame(maxHeight: .infinity)
-
 					VStack(alignment: .leading) {
 						Text(station.name)
 							.font(.title3)
@@ -89,3 +89,32 @@ struct StationCellView: View {
 	}
 }
 
+
+struct StationCellView_Previews: PreviewProvider {
+	static var previews: some View {
+		VStack {
+			Spacer()
+				.frame(maxHeight: .infinity)
+
+			StationCellView(
+				station: Station(
+					id: "test",
+					name: "test",
+					bikeCount: "1",
+					bikes: [
+						Bike(
+							id: "test",
+							range: "25 miles",
+							batteryIcon: "battery.100"
+						)
+					],
+					lat: 20.1,
+					lon: 20.1
+				)
+			)
+			
+			Spacer()
+				.frame(maxHeight: .infinity)
+		}
+	}
+}
