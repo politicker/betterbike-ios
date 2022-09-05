@@ -52,8 +52,33 @@ struct BikeCount: View {
 			.foregroundColor(Color.background)
 			.background(
 				Circle()
-					.fill(Color.foreground)
+					.fill(Color.bikeCountBackground)
 			)
+	}
+}
+
+struct StationHeader: View {
+	var station: Station
+	var stationRoute: StationRoute?
+
+	var body: some View {
+		VStack(alignment: .leading) {
+			Text(station.name)
+				.font(.title3)
+				.fontWeight(.bold)
+
+			if let travelTime = stationRoute?.travelTimeInMinutes {
+				Text("\(travelTime) min walk")
+					.font(.body)
+					.italic()
+					.foregroundColor(Color.secondaryText)
+			} else {
+				Text("-- min walk")
+					.font(.body)
+					.italic()
+					.foregroundColor(Color.secondaryText)
+			}
+		}
 	}
 }
 
@@ -65,23 +90,10 @@ struct StationCellView: View {
 		HStack(alignment: .top) {
 			BikeCount(count: station.bikeCount)
 				.padding(.trailing, 6)
-			
+
 			VStack(alignment: .leading) {
-				HStack {
-					VStack(alignment: .leading) {
-						Text(station.name)
-							.font(.title3)
-							.fontWeight(.bold)
-						
-						if let travelTime = stationRoute?.travelTimeInMinutes {
-							Text("\(travelTime) min walk")
-								.font(.body)
-								.italic()
-								.foregroundColor(Color.secondaryText)
-						}
-					}
-				}
-				
+				StationHeader(station: station, stationRoute: stationRoute)
+				Spacer()
 				BikeListView(bikes: station.bikes)
 			}
 		}

@@ -16,10 +16,14 @@ struct ContentView: View {
 	
 	init() {
 		UITableView.appearance().separatorColor = .clear
+		UITableView.appearance().backgroundColor = .clear
+		UITableViewCell.appearance().backgroundColor = .clear
 	}
 	
 	var body: some View {
 		ZStack {
+			Color.background
+				.ignoresSafeArea(.all)
 			if viewModel.locationFailed {
 				ErrorLocationView()
 			} else if viewModel.fetchError != "" {
@@ -40,7 +44,6 @@ struct ContentView: View {
 									stationRoute: viewModel.stationRoutes[station.id]
 								)
 									.listRowSeparator(.hidden)
-
 								if let userCoordinate = viewModel.location {
 									NavigationLink(
 										destination: StationMapView(
@@ -48,7 +51,7 @@ struct ContentView: View {
 											route: viewModel.stationRoutes[station.id],
 											userCoordinate: userCoordinate
 										)
-									) {
+									)	{
 										cellView
 									}
 								} else {
@@ -56,8 +59,9 @@ struct ContentView: View {
 								}
 
 								Divider()
+									.padding(0.5)
 							}
-							
+
 							Text("Updated \(viewModel.lastUpdated)")
 								.font(.subheadline)
 								.foregroundColor(.gray)
@@ -80,8 +84,8 @@ struct ContentView: View {
 					}
 				}
 				.buttonStyle(.plain)
-				
-				
+
+
 				SplashScreen()
 					.opacity(viewModel.stations.isEmpty ? 1 : 0)
 					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)

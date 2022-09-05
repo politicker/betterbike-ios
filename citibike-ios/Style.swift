@@ -14,4 +14,5 @@ extension Color {
 	static let primaryGreen = Color("Primary")
 	static let bikeBatteryLow = Color("BikeBatteryLow")
 	static let secondaryText = Color("SecondaryText")
+	static let bikeCountBackground = Color("BikeCountBackground")
 }
