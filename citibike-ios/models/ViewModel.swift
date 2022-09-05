@@ -23,7 +23,12 @@ class ViewModel: NSObject, ObservableObject {
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
 	
-	var location: CLLocationCoordinate2D?
+	var location: CLLocationCoordinate2D? {
+		didSet {
+			populateStationRoutes()
+		}
+	}
+
 	var lastUpdatedTimer: Timer?
 	var cancelLocation: AnyCancellable?
 	let locationService = LocationService()
@@ -33,20 +38,20 @@ class ViewModel: NSObject, ObservableObject {
 		
 		cancelLocation = locationService.$location.sink { result in
 			switch result {
-			case .success(let coordinate):
-				if self.location == nil {
-					self.location = coordinate
-					self.refresh(coordinate: coordinate)
-				} else {
-					self.location = coordinate
-				}
-			case .failure(let error):
-				switch error {
-				case .initial:
-					self.locationFailed = false
-				default:
-					self.locationFailed = true
-				}
+				case .success(let coordinate):
+					if self.location == nil {
+						self.location = coordinate
+						self.refresh(coordinate: coordinate)
+					} else {
+						self.location = coordinate
+					}
+				case .failure(let error):
+					switch error {
+						case .initial:
+							self.locationFailed = false
+						default:
+							self.locationFailed = true
+					}
 			}
 		}
 	}
@@ -59,37 +64,20 @@ class ViewModel: NSObject, ObservableObject {
 		locationService.requestLocation()
 	}
 	
-	func fetchStations(coordinate: CLLocationCoordinate2D) async -> Void {
+	func fetchStations(coordinate: CLLocationCoordinate2D) async -> Result<Home, NetworkError> {
 		logger.debug("fetching stations")
 		
 		let result = await API().fetchStations(coordinate: coordinate)
 
-		DispatchQueue.main.async {
-			switch result {
+		switch result {
 			case .success(let response):
-				self.stations = response.stations
-				self.fetchError = ""
-				
-				if let lastUpdatedTimer = self.lastUpdatedTimer {
-					lastUpdatedTimer.invalidate()
-				}
-				
-				self.lastUpdatedTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-					self.lastUpdated = response.shortDate
-				}
+				return .success(response)
 			case .failure(let error):
-				switch error {
-				case .serverError(let message):
-					self.fetchError = message.error
-				case .unknownError(let message):
-					self.fetchError = message
-				default:
-					self.fetchError = error.localizedDescription
-				}
-			}
+				return .failure(error)
 		}
 	}
-	
+
+	// TODO: use `async let` to spin these off concurrently
 	func populateStationRoutes() -> Void {
 		for station in stations {
 			Task {
@@ -112,11 +100,33 @@ class ViewModel: NSObject, ObservableObject {
 		}
 	}
 	
-	
 	func refresh(coordinate: CLLocationCoordinate2D) {
 		Task {
-			await fetchStations(coordinate: coordinate)
-			populateStationRoutes()
+			let response = await fetchStations(coordinate: coordinate)
+			DispatchQueue.main.async {
+				switch response {
+					case .success(let data):
+						self.stations = data.stations
+						self.fetchError = ""
+
+						if let lastUpdatedTimer = self.lastUpdatedTimer {
+							lastUpdatedTimer.invalidate()
+						}
+
+						self.lastUpdatedTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+							self.lastUpdated = data.shortDate
+						}
+					case .failure(let error):
+						switch error {
+							case .serverError(let message):
+								self.fetchError = message.error
+							case .unknownError(let message):
+								self.fetchError = message
+							default:
+								self.fetchError = error.localizedDescription
+						}
+				}
+			}
 		}
 	}
 	

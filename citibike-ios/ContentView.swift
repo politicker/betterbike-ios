@@ -80,7 +80,9 @@ struct ContentView: View {
 						viewModel.requestLocationPermission()
 						viewModel.requestLocation()
 					}.onChange(of: scenePhase) { newPhase in
-						viewModel.reset()
+						if newPhase == .background {
+							viewModel.reset()
+						}
 					}
 				}
 				.buttonStyle(.plain)
