@@ -34,7 +34,7 @@ struct ContentView: View {
 						List {
 							ForEach($viewModel.stations) { station in
 								NavigationLink(destination: StationMapView(station: station.wrappedValue, route: viewModel.stationRoutes[station.id])) {
-									StationListCellView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
+									StationCellView(station: station.wrappedValue, stationRoute: viewModel.stationRoutes[station.id])
 										.listRowSeparator(.hidden)
 								}
 								Divider()

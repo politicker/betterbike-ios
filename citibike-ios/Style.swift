@@ -13,4 +13,5 @@ extension Color {
 	static let brandGreen = Color("AccentColor")
 	static let primaryGreen = Color("Primary")
 	static let bikeBatteryLow = Color("BikeBatteryLow")
+	static let secondaryText = Color("SecondaryText")
 }
