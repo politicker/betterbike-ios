@@ -9,17 +9,21 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
+struct UpdatedAtView: View {
+	var lastUpdated: String
+	var body: some View {
+		Text("Updated \(lastUpdated)")
+			.font(.subheadline)
+			.foregroundColor(.gray)
+			.frame(maxWidth: .infinity, alignment: .center)
+	}
+}
+
 struct ContentView: View {
 	@State var splashOpacity: Double = 1
 	@StateObject var viewModel = ViewModel.shared
 	@Environment(\.scenePhase) var scenePhase
-	
-	init() {
-		UITableView.appearance().separatorColor = .clear
-		UITableView.appearance().backgroundColor = .clear
-		UITableViewCell.appearance().backgroundColor = .clear
-	}
-	
+
 	var body: some View {
 		ZStack {
 			Color.background
@@ -84,8 +88,6 @@ struct ContentView: View {
 					}
 				}
 				.buttonStyle(.plain)
-
-
 				SplashScreen()
 					.opacity(viewModel.stations.isEmpty ? 1 : 0)
 					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
