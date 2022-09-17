@@ -57,11 +57,14 @@ extension LocationService: CLLocationManagerDelegate {
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-		if status == .authorizedWhenInUse || status == .authorizedAlways {
-			location = .failure(.initial)
-			requestLocation()
-		} else {
-			location = .failure(.authFailed)
+		switch status {
+			case .authorizedAlways, .authorizedWhenInUse:
+				requestLocation()
+				location = .failure(.initial)
+			case .restricted, .denied:
+				location = .failure(.authFailed)
+			default:
+				location = .failure(.initial)
 		}
 	}
 }
