@@ -17,12 +17,18 @@ class ViewModel: NSObject, ObservableObject {
 
 	static let shared = ViewModel()
 
+	enum LocationState {
+		case initial
+		case failed
+		case succeeded
+	}
+
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
-	@Published var locationFailed: Bool = false
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
-	
+	@Published var locationState: LocationState = .initial
+
 	var location: CLLocationCoordinate2D?
 
 	var lastUpdatedTimer: Timer?
@@ -46,9 +52,9 @@ class ViewModel: NSObject, ObservableObject {
 					case .failure(let error):
 						switch error {
 							case .initial:
-								self.locationFailed = false
+								self.locationState = .initial
 							default:
-								self.locationFailed = true
+								self.locationState = .failed
 						}
 				}
 			}

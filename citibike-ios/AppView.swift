@@ -16,7 +16,7 @@ struct AppView: View {
 		ZStack {
 			Color.background
 				.ignoresSafeArea(.all)
-			if viewModel.locationFailed {
+			if viewModel.locationState == .failed {
 				ErrorLocationView()
 			} else if viewModel.fetchError != "" {
 				ErrorView(message: viewModel.fetchError) {
