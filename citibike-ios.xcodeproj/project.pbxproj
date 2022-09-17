@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842D2DA028D6493D00F8984C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842D2D9F28D6493D00F8984C /* OnboardingView.swift */; };
+		842D2DA228D64B1C00F8984C /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842D2DA128D64B1C00F8984C /* AppView.swift */; };
 		8451225928C4117300FC4F9E /* StationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225828C4117300FC4F9E /* StationMapView.swift */; };
 		8451225B28C4119D00FC4F9E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225A28C4119D00FC4F9E /* Location.swift */; };
 		8451225D28C431C700FC4F9E /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451225C28C431C700FC4F9E /* MapHelpers.swift */; };
@@ -32,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		842D2D9F28D6493D00F8984C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		842D2DA128D64B1C00F8984C /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		8451225728C3C4E400FC4F9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8451225828C4117300FC4F9E /* StationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMapView.swift; sourceTree = "<group>"; };
 		8451225A28C4119D00FC4F9E /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -105,6 +109,8 @@
 				8451225C28C431C700FC4F9E /* MapHelpers.swift */,
 				8451225E28C4328100FC4F9E /* MapView.swift */,
 				8451226028C4EF6700FC4F9E /* Style.swift */,
+				842D2D9F28D6493D00F8984C /* OnboardingView.swift */,
+				842D2DA128D64B1C00F8984C /* AppView.swift */,
 			);
 			path = "citibike-ios";
 			sourceTree = "<group>";
@@ -215,9 +221,11 @@
 				848E984728BBBC6100E8C051 /* DateExtension.swift in Sources */,
 				848E983D28BAED9700E8C051 /* Bike.swift in Sources */,
 				8451226128C4EF6700FC4F9E /* Style.swift in Sources */,
+				842D2DA028D6493D00F8984C /* OnboardingView.swift in Sources */,
 				848E982D28BAEC8000E8C051 /* citibike_iosApp.swift in Sources */,
 				C01CF8F628C3E1F300B1B349 /* StationRoute.swift in Sources */,
 				848E984328BAF18E00E8C051 /* Home.swift in Sources */,
+				842D2DA228D64B1C00F8984C /* AppView.swift in Sources */,
 				848E984D28BBE21300E8C051 /* ViewModel.swift in Sources */,
 				848E984928BBD27200E8C051 /* SplashScreen.swift in Sources */,
 				8451225D28C431C700FC4F9E /* MapHelpers.swift in Sources */,

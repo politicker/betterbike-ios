@@ -16,3 +16,8 @@ extension Color {
 	static let secondaryText = Color("SecondaryText")
 	static let bikeCountBackground = Color("BikeCountBackground")
 }
+
+extension Font {
+	static let title = Font.system(size: 24)
+	static let subTitle = Font.system(size: 20)
+}
