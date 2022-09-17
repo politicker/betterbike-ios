@@ -58,14 +58,10 @@ struct ContentView: View {
 								} else {
 									cellView
 								}
-
-								Divider()
 							}
 
-							Text("Updated \(viewModel.lastUpdated)")
-								.font(.subheadline)
-								.foregroundColor(.gray)
-								.frame(maxWidth: .infinity, alignment: .center)
+							UpdatedAtView(lastUpdated: viewModel.lastUpdated)
+								.listRowSeparator(.hidden)
 						}
 						.navigationBarHidden(true)
 						.listStyle(.plain)
