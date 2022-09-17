@@ -20,7 +20,7 @@ struct UpdatedAtView: View {
 }
 
 struct ContentView: View {
-	@AppStorage("____shouldShowOnboarding") var shouldShowOnboarding: Bool = true
+	@AppStorage("shouldShowOnboarding") var shouldShowOnboarding: Bool = true
 	@State var splashOpacity: Double = 1
 	@StateObject var viewModel = ViewModel.shared
 
