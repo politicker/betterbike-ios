@@ -20,7 +20,7 @@ class ViewModel: NSObject, ObservableObject {
 	enum LocationState {
 		case initial
 		case failed
-		case succeeded
+		case granted
 	}
 
 	@Published var lastUpdated: String = ""
@@ -28,6 +28,7 @@ class ViewModel: NSObject, ObservableObject {
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
 	@Published var locationState: LocationState = .initial
+	@Published var onboardingTab: Int = 0
 
 	var location: CLLocationCoordinate2D?
 
@@ -45,6 +46,8 @@ class ViewModel: NSObject, ObservableObject {
 					case .success(let coordinate):
 						if self.location == nil {
 							self.location = coordinate
+							self.locationState = .granted
+							self.onboardingTab = 1
 							self.refresh(coordinate: coordinate)
 						} else {
 							self.location = coordinate

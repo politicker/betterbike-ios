@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct OnboardingPage: View {
 	let title: String
@@ -40,16 +41,16 @@ struct OnboardingPage: View {
 				Button("Get Started") {
 					shouldShowOnboarding.toggle()
 				}
-					.foregroundColor(Color.white)
-					.padding()
-					.background(
-						RoundedRectangle(
-							cornerRadius: 10,
-							style: .continuous
-						)
-						.fill(Color.primaryGreen)
+				.foregroundColor(Color.primary)
+				.padding()
+				.background(
+					RoundedRectangle(
+						cornerRadius: 10,
+						style: .continuous
 					)
-					.cornerRadius(6)
+					.fill(Color.primaryGreen)
+				)
+				.cornerRadius(6)
 			}
 		}
 	}
@@ -57,16 +58,17 @@ struct OnboardingPage: View {
 
 struct OnboardingView: View {
 	@Binding var shouldShowOnboarding: Bool
-	let viewModel: ViewModel
+	@ObservedObject var viewModel: ViewModel
 
 	var body: some View {
-		TabView {
+		TabView(selection: $viewModel.onboardingTab) {
 			OnboardingPage(
 				title: "Share Your Location",
 				subTitle: "BetterBike uses your location to find the closest stations with electric bikes. We never store this information.",
 				showLocationButton: true,
 				viewModel: viewModel,
 				shouldShowOnboarding: $shouldShowOnboarding)
+			.tag(0)
 
 			OnboardingPage(
 				title: "Get Walking Directions",
@@ -74,11 +76,12 @@ struct OnboardingView: View {
 				showDismissButton: true,
 				viewModel: viewModel,
 				shouldShowOnboarding: $shouldShowOnboarding)
+			.tag(1)
 		}
 		.tabViewStyle(.page(indexDisplayMode: .always))
 		.onAppear {
-//			UIPageControl.appearance().currentPageIndicatorTintColor = .red
-//			UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
+			UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.foreground)
+			UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color.foreground).withAlphaComponent(0.2)
 		}
 	}
 }
