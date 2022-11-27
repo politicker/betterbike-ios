@@ -30,9 +30,11 @@ struct ContentView: View {
 					.fullScreenCover(isPresented: $shouldShowOnboarding, content: {
 						OnboardingView(shouldShowOnboarding: $shouldShowOnboarding, viewModel: viewModel)
 					})
+
+				// When should we show splash?
 				SplashScreen()
-					.opacity(viewModel.stations.isEmpty ? 1 : 0)
-					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
+				.opacity(viewModel.shouldShowSplash ? 1 : 0)
+					.animation(.easeOut(duration: 0.3), value: viewModel.shouldShowSplash)
 		}
 	}
 }

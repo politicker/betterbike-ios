@@ -39,7 +39,15 @@ struct OnboardingPage: View {
 
 			if showDismissButton {
 				Button("Get Started") {
-					shouldShowOnboarding.toggle()
+					if viewModel.locationState != .granted {
+						viewModel.requestLocationPermission()
+
+						viewModel.$locationState.sink { _ in
+							shouldShowOnboarding.toggle()
+						}
+					} else {
+						shouldShowOnboarding.toggle()
+					}
 				}
 				.foregroundColor(Color.primary)
 				.padding()

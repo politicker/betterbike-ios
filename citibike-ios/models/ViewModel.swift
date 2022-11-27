@@ -29,6 +29,10 @@ class ViewModel: NSObject, ObservableObject {
 		case normal
 	}
 
+	var shouldShowSplash: Bool {
+		return stations.isEmpty && locationState != .failed
+	}
+	
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
 	@Published var fetchError: String = ""
