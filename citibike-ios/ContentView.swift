@@ -26,13 +26,13 @@ struct ContentView: View {
 
 	var body: some View {
 		ZStack {
-			AppView(viewModel: viewModel)
-				.fullScreenCover(isPresented: $shouldShowOnboarding, content: {
-					OnboardingView(shouldShowOnboarding: $shouldShowOnboarding, viewModel: viewModel)
-				})
-			SplashScreen()
-				.opacity(viewModel.stations.isEmpty ? 1 : 0)
-				.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
+				AppView(viewModel: viewModel)
+					.fullScreenCover(isPresented: $shouldShowOnboarding, content: {
+						OnboardingView(shouldShowOnboarding: $shouldShowOnboarding, viewModel: viewModel)
+					})
+				SplashScreen()
+					.opacity(viewModel.stations.isEmpty ? 1 : 0)
+					.animation(.easeOut(duration: 0.3), value: viewModel.stations.isEmpty)
 		}
 	}
 }

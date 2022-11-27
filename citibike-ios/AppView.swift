@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct AppView: View {
 	@ObservedObject var viewModel: ViewModel
 	@Environment(\.scenePhase) var scenePhase
@@ -25,44 +24,7 @@ struct AppView: View {
 					}
 				}
 			} else {
-				NavigationView {
-					VStack(spacing: 0) {
-						List {
-							ForEach($viewModel.stations) { station in
-								let cellView = StationCellView(
-									station: station.wrappedValue,
-									stationRoute: viewModel.stationRoutes[station.id]
-								)
-								if let userCoordinate = viewModel.location {
-									NavigationLink(
-										destination: StationMapView(
-											station: station.wrappedValue,
-											route: viewModel.stationRoutes[station.id],
-											userCoordinate: userCoordinate
-										)
-									)	{
-										cellView
-									}
-								} else {
-									cellView
-								}
-							}
-
-							UpdatedAtView(lastUpdated: viewModel.lastUpdated)
-								.listRowSeparator(.hidden)
-						}
-						.navigationBarHidden(true)
-						.listStyle(.plain)
-						.refreshable {
-							if let coordinate = viewModel.location {
-								viewModel.refresh(coordinate: coordinate)
-							}
-						}
-						.padding(.top)
-					}
-					.onAppear {
-						viewModel.requestLocation()
-					}
+				ListView(viewModel: viewModel)
 					.onChange(of: scenePhase) { newPhase in
 						if newPhase == .active {
 							if let location = viewModel.location {
@@ -70,8 +32,53 @@ struct AppView: View {
 							}
 						}
 					}
+			}
+		}
+	}
+}
+
+struct ListView: View {
+	@ObservedObject var viewModel: ViewModel
+
+	var body: some View {
+		NavigationView {
+			VStack(spacing: 0) {
+				List {
+					ForEach($viewModel.stations) { station in
+						let cellView = StationCellView(
+							station: station.wrappedValue,
+							stationRoute: viewModel.stationRoutes[station.id]
+						)
+						if let userCoordinate = viewModel.location {
+							NavigationLink(
+								destination: StationMapView(
+									station: station.wrappedValue,
+									route: viewModel.stationRoutes[station.id],
+									userCoordinate: userCoordinate
+								)
+							)	{
+								cellView
+							}
+						} else {
+							cellView
+						}
+					}
+
+					UpdatedAtView(lastUpdated: viewModel.lastUpdated)
+						.listRowSeparator(.hidden)
 				}
+				.navigationBarHidden(true)
+				.listStyle(.plain)
 				.buttonStyle(.plain)
+				.refreshable {
+					if let coordinate = viewModel.location {
+						viewModel.refresh(coordinate: coordinate)
+					}
+				}
+				.padding(.top)
+			}
+			.onAppear {
+				viewModel.requestLocation()
 			}
 		}
 	}

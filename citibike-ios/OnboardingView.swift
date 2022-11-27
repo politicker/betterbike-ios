@@ -21,7 +21,7 @@ struct OnboardingPage: View {
 	var body: some View {
 		VStack {
 			Text(title)
-				.font(.largeTitle)
+				.font(.title)
 				.fontWeight(.black)
 				.padding(.horizontal)
 				.padding(.bottom, 4)
@@ -69,6 +69,7 @@ struct OnboardingView: View {
 				viewModel: viewModel,
 				shouldShowOnboarding: $shouldShowOnboarding)
 			.tag(0)
+			.allowsHitTesting(false)
 
 			OnboardingPage(
 				title: "Get Walking Directions",

@@ -23,12 +23,19 @@ class ViewModel: NSObject, ObservableObject {
 		case granted
 	}
 
+	enum DisplayState {
+		case locationFailed
+		case networkFailed
+		case normal
+	}
+
 	@Published var lastUpdated: String = ""
 	@Published var stations: [Station] = []
 	@Published var fetchError: String = ""
 	@Published var stationRoutes: [String: StationRoute] = [:]
 	@Published var locationState: LocationState = .initial
 	@Published var onboardingTab: Int = 0
+	@Published var displayState: DisplayState = .normal
 
 	var location: CLLocationCoordinate2D?
 
