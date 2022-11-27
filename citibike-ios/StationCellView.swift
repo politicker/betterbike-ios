@@ -26,6 +26,11 @@ struct BikeListView: View {
 						.font(.callout)
 					Text(bike.range)
 						.font(.callout)
+
+					if bike.isNextGen {
+						Image(systemName: "bolt.horizontal.fill")
+							.font(.callout)
+					}
 				}
 			}
 		}
@@ -116,7 +121,8 @@ struct StationCellView_Previews: PreviewProvider {
 						Bike(
 							id: "test",
 							range: "25 miles",
-							batteryIcon: "battery.100"
+							batteryIcon: "battery.100",
+							isNextGen: true
 						)
 					],
 					lat: 20.1,
