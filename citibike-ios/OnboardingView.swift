@@ -69,7 +69,6 @@ struct OnboardingView: View {
 				viewModel: viewModel,
 				shouldShowOnboarding: $shouldShowOnboarding)
 			.tag(0)
-			.allowsHitTesting(false)
 
 			OnboardingPage(
 				title: "Get Walking Directions",
