@@ -20,6 +20,8 @@ struct MapView: UIViewRepresentable {
 		mapView.region = region
 
 		mapView.showsUserLocation = true
+		mapView.userTrackingMode = .followWithHeading
+		mapView.isUserInteractionEnabled = false
 		mapView.addAnnotation(MKPointAnnotation(__coordinate: annotation.coordinate))
 
 		if let polyLine = polyLine {

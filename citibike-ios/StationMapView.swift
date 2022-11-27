@@ -49,10 +49,8 @@ struct StationMapView: View {
 	var body: some View {
 		VStack {
 			MapView(region: coordinateRegion, annotation: location, polyLine: polyLine)
-				.navigationBarBackButtonHidden(true)
-				.navigationBarItems(leading: BackButton())
+				.accentColor(.blue)
 				.edgesIgnoringSafeArea(.all)
 		}
-		.navigationBarBackButtonHidden(true)
 	}
 }

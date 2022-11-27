@@ -67,7 +67,6 @@ struct ListView: View {
 					UpdatedAtView(lastUpdated: viewModel.lastUpdated)
 						.listRowSeparator(.hidden)
 				}
-				.navigationBarHidden(true)
 				.listStyle(.plain)
 				.buttonStyle(.plain)
 				.refreshable {
